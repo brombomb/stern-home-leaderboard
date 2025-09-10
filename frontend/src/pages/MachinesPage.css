@@ -112,6 +112,19 @@
   width: auto;
   margin-right: 1rem;
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.game-logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(2px 2px 8px rgba(229, 57, 53, 0.6))
+          drop-shadow(0 0 10px rgba(229, 57, 53, 0.4));
+}
+
+.game-logo:active {
+  transform: scale(0.98);
 }
 
 .game-logo.square {
@@ -210,7 +223,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  width: 180px;
+  width: 240px;
   overflow: hidden;
 }
 

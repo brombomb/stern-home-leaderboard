@@ -8,6 +8,7 @@ A web application for displaying pinball machine high scores from Stern Pinball'
 - **Player Avatars**: Shows player profile pictures and custom backgrounds from Stern's network
 - **Machine Status**: Visual indicators for online/offline machine status
 - **Game Branding**: Dynamic backgrounds and logos for each pinball machine
+- **Fullscreen Mode**: Display individual machines in fullscreen for kiosks or dedicated displays
 - **Responsive Design**: Works on desktop and mobile devices
 - **Auto-authentication**: Handles Stern API authentication automatically with retry logic
 
@@ -67,6 +68,7 @@ A web application for displaying pinball machine high scores from Stern Pinball'
 4. **Access the application**
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:5000
+   - Fullscreen mode: http://localhost:3000?machine=MACHINE_ID&fullscreen=true
 
 ## 🛠️ Development
 
@@ -143,6 +145,50 @@ The backend provides the following API endpoints:
 3. **Score Fetching**: Retrieves high scores for each machine
 4. **Avatar Loading**: Downloads player avatars and profile information
 5. **Real-time Updates**: Displays everything in a responsive web interface
+6. **Fullscreen Mode**: Individual machines can be displayed fullscreen using query parameters
+
+### Fullscreen Mode
+
+Display any machine in fullscreen mode with multiple interaction methods:
+
+#### Accessing Fullscreen Mode
+
+1. **Click Game Logo**: Simply click on any game logo to enter fullscreen mode
+2. **Direct URL**: Navigate directly using query parameters:
+   ```
+   http://localhost:3000?machine=MACHINE_ID&fullscreen=true
+   ```
+3. **Copy & Share**: Copy the current page URL when in fullscreen to share or bookmark specific machines
+
+#### Exiting Fullscreen Mode
+
+- **Click Game Logo**: Click the game logo again to exit fullscreen
+- **Escape Key**: Press ESC to exit fullscreen mode
+- **Exit Button**: Click the X button in the top-right corner
+
+#### Features
+
+- **Kiosk Mode**: Perfect for dedicated displays next to pinball machines
+- **Auto-refresh**: Automatically fetches latest high scores
+- **Responsive**: Adapts to any screen size
+- **Shareable URLs**: Copy and paste URLs to go directly to specific machines in fullscreen
+
+#### Usage Examples
+
+- **Next to a machine**: `?machine=12345&fullscreen=true`
+- **Sharing high scores**: Copy the URL and send to friends
+- **Bookmarking favorites**: Save direct links to your favorite machines
+- **Digital signage**: Display rotating machines on TVs or monitors
+- **Tournament displays**: Show specific tournament machines
+- **Home arcade displays**: Dedicated kiosk mode for home setups
+
+#### Finding Machine IDs
+
+To get a machine ID for direct URL access:
+1. Click on any game logo to enter fullscreen
+2. Copy the URL from your browser's address bar
+3. The machine ID will be in the URL as `machine=XXXXX`
+4. Use this ID to create direct links or bookmarks
 
 ## 🐳 Docker Deployment
 

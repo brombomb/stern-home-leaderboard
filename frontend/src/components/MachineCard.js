@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import HighScoresTable from './HighScoresTable';
+import { setQueryParams } from '../utils/queryParams';
 
 function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighScores }) {
   const backgroundImage = machine.model?.title?.primary_background;
@@ -18,6 +19,13 @@ function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighS
     }
   }, [machine.id, onFetchHighScores, highScores, loadingScores]);
 
+  const handleFullscreen = () => {
+    setQueryParams({
+      machine: String(machine.id), // Ensure it's always a string
+      fullscreen: 'true'
+    });
+  };
+
   return (
     <div
       className={`machine-card ${backgroundImage ? 'with-background' : ''}`}
@@ -29,9 +37,21 @@ function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighS
 
       <div className="machine-header">
         {variableWidthLogo ? (
-          <img src={variableWidthLogo} alt={gameName} className="game-logo" />
+          <img
+            src={variableWidthLogo}
+            alt={gameName}
+            className="game-logo"
+            onClick={handleFullscreen}
+            title="Click to view fullscreen"
+          />
         ) : squareLogo && (
-          <img src={squareLogo} alt={gameName} className="game-logo square" />
+          <img
+            src={squareLogo}
+            alt={gameName}
+            className="game-logo square"
+            onClick={handleFullscreen}
+            title="Click to view fullscreen"
+          />
         )}
       </div>
 

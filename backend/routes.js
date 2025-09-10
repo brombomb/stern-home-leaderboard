@@ -46,11 +46,37 @@ const createHeaders = (req) => {
   return headers;
 };
 
-// Helper function for making API calls
-const makeApiCall = async (url, req, res, errorMessage) => {
+// Helper function for making API calls with automatic retry on 403
+const makeApiCall = async (url, req, res, errorMessage, retryCount = 0) => {
+  const MAX_RETRIES = 2;
+
   try {
     const headers = createHeaders(req);
     const response = await fetch(url, { headers });
+
+    // Handle 403 Forbidden - likely authentication issue
+    if (response.status === 403 && retryCount < MAX_RETRIES) {
+      console.log(`Received 403 response, attempting to refresh auth (retry ${retryCount + 1}/${MAX_RETRIES})`);
+
+      // Attempt to refresh authentication
+      const refreshed = await SternAuth.refreshAuth();
+      if (refreshed) {
+        console.log('Authentication refreshed, retrying API call...');
+
+        // Update request with new auth data
+        req.authData = SternAuth.authData;
+        req.cookies = SternAuth.cookies;
+
+        // Retry the API call
+        return makeApiCall(url, req, res, errorMessage, retryCount + 1);
+      } else {
+        console.error('Failed to refresh authentication after 403 response');
+        return res.status(401).json({
+          error: 'Authentication expired and refresh failed',
+          details: 'Please check your credentials'
+        });
+      }
+    }
 
     if (!response.ok) {
       throw new Error(`API call failed with status ${response.status}`);
@@ -60,9 +86,16 @@ const makeApiCall = async (url, req, res, errorMessage) => {
     return res.json(data);
   } catch (err) {
     console.error(`${errorMessage}:`, err.message);
+
+    // If this was a retry attempt, provide more context
+    if (retryCount > 0) {
+      console.error(`Failed after ${retryCount} retry attempts`);
+    }
+
     return res.status(500).json({
       error: errorMessage,
-      details: err.message
+      details: err.message,
+      retryAttempts: retryCount
     });
   }
 };

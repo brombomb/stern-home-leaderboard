@@ -1,0 +1,305 @@
+/* Fullscreen Machine Styles */
+.fullscreen-machine {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  color: white;
+  z-index: 9999;
+}
+
+/* Exit button */
+.exit-fullscreen-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exit-fullscreen-button:hover {
+  background: rgba(229, 57, 53, 0.8);
+  border-color: rgba(229, 57, 53, 0.8);
+  transform: scale(1.1);
+}
+
+.exit-fullscreen-button:active {
+  transform: scale(0.9);
+}
+
+.fullscreen-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Header */
+.fullscreen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.game-logo-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.fullscreen-game-logo {
+  max-height: 120px;
+  max-width: 400px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+}
+
+.fullscreen-game-logo:hover {
+  transform: scale(1.03);
+  filter: drop-shadow(0 4px 12px rgba(229, 57, 53, 0.6))
+          drop-shadow(0 0 15px rgba(229, 57, 53, 0.4));
+}
+
+.fullscreen-game-logo:active {
+  transform: scale(0.98);
+}
+
+.fullscreen-game-logo.square {
+  max-height: 100px;
+  max-width: 100px;
+}
+
+/* Status */
+.status-container {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+}
+
+.status-indicator-large {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+}
+
+.status-dot-online-large,
+.status-dot-offline-large {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.status-dot-online-large {
+  background-color: #4CAF50;
+  box-shadow: 0 0 10px #4CAF50;
+}
+
+.status-dot-offline-large {
+  background-color: #f44336;
+  box-shadow: 0 0 10px #f44336;
+}
+
+.status-text {
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+/* Scores */
+.fullscreen-scores {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.scores-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 2px;
+  background: linear-gradient(45deg, #FFD700, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.scores-table-container {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced table styles for fullscreen */
+.fullscreen-scores .high-scores-table {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.fullscreen-scores .table-header th {
+  font-size: 1.4rem;
+  padding: 1.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.fullscreen-scores .table-row td {
+  padding: 1.2rem 1rem;
+  font-size: 1.2rem;
+}
+
+.fullscreen-scores .rank-cell {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.fullscreen-scores .player-avatar {
+  width: 50px;
+  height: 50px;
+}
+
+.fullscreen-scores .player-name {
+  font-size: 1.3rem;
+  margin-left: 1rem;
+}
+
+.fullscreen-scores .score-cell {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* Footer */
+.fullscreen-footer {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.last-played-large {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  display: inline-block;
+  backdrop-filter: blur(10px);
+}
+
+/* Loading and error states for fullscreen */
+.fullscreen-scores .loading-scores,
+.fullscreen-scores .error-scores,
+.fullscreen-scores .no-scores {
+  font-size: 1.5rem;
+  padding: 3rem;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive design for fullscreen */
+@media (max-width: 768px) {
+  .fullscreen-content {
+    padding: 1rem;
+  }
+
+  .fullscreen-header {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .status-container {
+    position: relative;
+    top: auto;
+    right: auto;
+  }
+
+  .fullscreen-game-logo {
+    max-height: 80px;
+    max-width: 300px;
+  }
+
+  .scores-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .scores-table-container {
+    padding: 1rem;
+  }
+
+  .fullscreen-scores .table-header th,
+  .fullscreen-scores .table-row td {
+    padding: 0.8rem 0.5rem;
+    font-size: 1rem;
+  }
+
+  .fullscreen-scores .rank-cell {
+    font-size: 1.2rem;
+  }
+
+  .fullscreen-scores .player-name {
+    font-size: 1.1rem;
+  }
+
+  .fullscreen-scores .score-cell {
+    font-size: 1.2rem;
+  }
+
+  .last-played-large {
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+  }
+}
