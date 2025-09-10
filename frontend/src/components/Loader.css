@@ -1,0 +1,24 @@
+/* Loader Component Styles */
+.loader-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.loader-text {
+  color: #e53935;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Add a simple loading animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader-container::before {
+  content: '⚙️';
+  display: inline-block;
+  margin-right: 0.5rem;
+  animation: spin 1s linear infinite;
+}

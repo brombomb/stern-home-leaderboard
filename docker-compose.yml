@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - STERN_USERNAME=${STERN_USERNAME}
+      - STERN_PASSWORD=${STERN_PASSWORD}
+      - DEFAULT_COUNTRY=${DEFAULT_COUNTRY:-US}
+      - DEFAULT_STATE=${DEFAULT_STATE:-CO}
+      - DEFAULT_STATE_NAME=${DEFAULT_STATE_NAME:-Colorado}
+      - DEFAULT_CONTINENT=${DEFAULT_CONTINENT:-NA}

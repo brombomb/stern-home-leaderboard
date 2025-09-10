@@ -1,0 +1,18 @@
+/* ErrorMessage Component Styles */
+.error-message {
+  color: #e53935;
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: center;
+  padding: 1rem;
+  background: rgba(229, 57, 53, 0.1);
+  border: 1px solid #e53935;
+  border-radius: 4px;
+  max-width: 600px;
+  margin: 1rem auto;
+}
+
+.error-message::before {
+  content: '⚠️';
+  margin-right: 0.5rem;
+}

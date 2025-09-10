@@ -1,0 +1,373 @@
+/* MachinesPage Styles */
+.machines-page {
+  max-width: 1200px;
+  margin: 2rem auto;
+  color: #fff;
+  padding: 0 1rem;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  color: #e53935;
+  margin: 0;
+  text-align: center;
+}
+
+.loading-message {
+  padding: 1rem;
+  text-align: center;
+}
+
+.error-message {
+  padding: 1rem;
+  color: #e53935;
+}
+
+.no-machines-message {
+  text-align: center;
+  color: #ccc;
+  font-size: 1.1rem;
+}
+
+.machines-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.machine-card {
+  background: #111;
+  margin: 2rem 0;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 8px #900;
+  border: 1px solid #333;
+  position: relative;
+  overflow: hidden;
+}
+
+.machine-card.with-background {
+  /* Background image will be applied via inline styles in JS */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;
+}
+
+/* Ensure content stays above the background image */
+.machine-card.with-background > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Status indicator in upper right corner */
+.machine-card.with-background .status-indicator {
+  position: absolute;
+  top: 1rem;
+  right: 2.5rem;
+  z-index: 3;
+}
+
+.status-dot-online,
+.status-dot-offline {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.status-dot-online {
+  background-color: #4caf50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+}
+
+.status-dot-offline {
+  background-color: #f44336;
+  box-shadow: 0 0 8px rgba(244, 67, 54, 0.6);
+}
+
+/* Last played in bottom right corner */
+.machine-card.with-background .last-played {
+  position: absolute;
+  bottom: 1rem;
+  right: 2.5rem;
+  font-size: 0.85rem;
+  color: #ccc;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  z-index: 3;
+}
+
+.machine-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.game-logo {
+  height: 60px;
+  width: auto;
+  margin-right: 1rem;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.game-logo.square {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+}
+
+.machine-info {
+  flex: 1;
+}
+
+.machine-title {
+  color: #fff;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.8);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.machine-details {
+  font-size: 0.9rem;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.7);
+}
+
+.high-scores-section {
+  margin-top: 1rem;
+}
+
+.high-scores-title {
+  color: #fff;
+  margin: 1rem 0 0.5rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.8);
+  font-weight: bold;
+}
+
+.high-scores-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  table-layout: fixed;
+}
+
+.table-header {
+  background: rgba(229, 57, 53, 0.6);
+  color: #fff;
+}
+
+.table-header th {
+  padding: 0.5rem;
+  border: none;
+  text-align: left;
+}
+
+/* Column width optimization */
+.table-header th:nth-child(1) {
+  width: 60px; /* Rank column - narrow */
+}
+
+.table-header th:nth-child(2) {
+  width: 180px; /* Player column - fixed width for avatar + 10 chars */
+}
+
+.table-header th:nth-child(3) {
+  width: auto; /* Score column - takes remaining space */
+  text-align: right;
+}
+
+.table-row {
+  border-bottom: none;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.table-row:hover {
+  background: rgba(229, 57, 53, 0.15);
+}
+
+.table-cell {
+  padding: 0.5rem;
+  color: #fff;
+  border: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.rank-cell {
+  font-weight: bold;
+  color: #e53935;
+  text-align: center;
+  width: 60px;
+}
+
+.player-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 180px;
+  overflow: hidden;
+}
+
+.player-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.player-avatar img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.player-name {
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score-cell {
+  text-align: right;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  min-width: 120px;
+  padding-right: 0.75rem;
+}
+
+.date-cell {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+/* Loading and Error States */
+.loading-scores {
+  padding: 1rem;
+  text-align: center;
+  color: #ccc;
+}
+
+.error-scores {
+  padding: 1rem;
+  color: #e53935;
+  text-align: center;
+}
+
+.no-scores {
+  padding: 1rem;
+  text-align: center;
+  color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .machines-page {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+
+  .machine-card {
+    margin: 1rem 0;
+    padding: 1rem;
+  }
+
+  .machine-header {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .game-logo {
+    margin-bottom: 1rem;
+    margin-right: 0;
+  }
+
+  .machine-title {
+    font-size: 1.2rem;
+  }
+
+  .status-indicator {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .last-played {
+    bottom: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .high-scores-table {
+    font-size: 0.85rem;
+  }
+
+  .table-cell {
+    padding: 0.25rem;
+  }
+
+  .table-header th:nth-child(1) {
+    width: 40px;
+  }
+
+  .table-header th:nth-child(2) {
+    width: 140px;
+  }
+
+  .player-cell {
+    gap: 0.25rem;
+    width: 140px;
+  }
+
+  .player-avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .player-avatar img {
+    width: 22px;
+    height: 22px;
+  }
+
+  .player-name {
+    font-size: 0.8rem;
+  }
+
+  .score-cell {
+    font-size: 0.85rem;
+    min-width: 100px;
+    padding-right: 0.5rem;
+  }
+}
+
+/* Animation for loading states */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loading-scores {
+  animation: pulse 1.5s ease-in-out infinite;
+}
