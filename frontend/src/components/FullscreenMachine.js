@@ -56,7 +56,6 @@ function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetc
           <div className="status-container">
             <div className="status-indicator-large" title={machine.online ? 'Online' : 'Offline'}>
               <span className={machine.online ? 'status-dot-online-large' : 'status-dot-offline-large'}></span>
-              <span className="status-text">{machine.online ? 'ONLINE' : 'OFFLINE'}</span>
             </div>
           </div>
         </div>

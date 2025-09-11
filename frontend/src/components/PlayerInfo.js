@@ -10,15 +10,7 @@ function PlayerInfo({ username, avatarData }) {
         className="player-avatar"
         style={backgroundColor ? { backgroundColor } : {}}
       >
-        <img
-          src={avatarUrl || '/pinball.svg'}
-          alt={username}
-          onError={(e) => {
-            if (e.target.src !== window.location.origin + '/pinball.svg') {
-              e.target.src = '/pinball.svg';
-            }
-          }}
-        />
+        <img className={ avatarUrl ? '' : 'placeholder'} src={avatarUrl || '/pinball.svg'} alt={username} />
       </div>
       <span className="player-name">{username}</span>
     </div>

@@ -246,6 +246,11 @@
   object-fit: cover;
 }
 
+.player-avatar img.placeholder {
+  width: 32px;
+  height: 32px;
+}
+
 .player-name {
   color: #fff;
   font-weight: 500;
