@@ -7,6 +7,12 @@ services:
     environment:
       - REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=${REACT_APP_DATA_REFRESH_INTERVAL_MINUTES:-60}
       - REACT_APP_GRID_COLUMNS=${REACT_APP_GRID_COLUMNS:-1}
+      - CUSTOM_CSS_PATH=${CUSTOM_CSS_PATH:-/app/data/custom.css}
+    volumes:
+      # Mount data directory for custom assets (CSS, images, fonts, etc.)
+      - ./data:/app/data:ro
+      # Alternative: Mount from a custom location
+      # - /path/to/your/custom/assets:/app/data:ro
     depends_on:
       - backend
   backend:

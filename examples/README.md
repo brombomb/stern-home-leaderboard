@@ -11,25 +11,34 @@ A comprehensive example of custom CSS overrides showing how to:
 - Style high score tables
 - Add animations and effects
 - Create responsive designs
+- Use custom assets (images, fonts)
 
 ### `docker-compose-with-custom-css.yml`
 An example Docker Compose configuration that demonstrates how to:
-- Enable custom CSS overrides
-- Mount your CSS file as a volume
+- Enable custom CSS overrides with data volume
+- Mount your assets directory
 - Set the required environment variables
 
 ## Usage
 
-### Using the Example CSS
+### Using the Data Volume Approach (Recommended)
 
-1. **Copy the example CSS file**:
+1. **Create your data directory**:
    ```bash
-   cp examples/custom-styles.css my-custom-styles.css
+   mkdir -p data/images data/fonts
    ```
 
-2. **Edit the CSS file** to match your preferences
+2. **Copy the example CSS file**:
+   ```bash
+   cp examples/custom-styles.css data/custom.css
+   ```
 
-3. **Use the example Docker Compose file**:
+3. **Add your assets**:
+   - Place images in `data/images/`
+   - Place fonts in `data/fonts/`
+   - Edit `data/custom.css` to reference your assets
+
+4. **Use the example Docker Compose file**:
    ```bash
    # Copy the example
    cp examples/docker-compose-with-custom-css.yml docker-compose.yml
@@ -38,14 +47,38 @@ An example Docker Compose configuration that demonstrates how to:
    docker-compose -f examples/docker-compose-with-custom-css.yml up
    ```
 
-4. **Or modify your existing docker-compose.yml**:
-   Add these lines to your frontend service:
-   ```yaml
-   environment:
-     - CUSTOM_CSS_PATH=/app/custom-css/overrides.css
-   volumes:
-     - ./my-custom-styles.css:/app/custom-css/overrides.css:ro
-   ```
+### Data Directory Structure
+```
+data/
+├── custom.css              # Main CSS file
+├── images/                 # Custom images
+│   ├── background.jpg      # Page background
+│   ├── logo.png           # Custom logo
+│   └── machines/          # Machine-specific images
+├── fonts/                 # Custom fonts
+│   ├── title-font.woff2   # Headers
+│   └── body-font.woff2    # Body text
+└── README.md              # Documentation
+```
+
+### Asset Usage in CSS
+```css
+/* Background images */
+body {
+  background-image: url('/app/data/images/background.jpg');
+}
+
+/* Custom fonts */
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/app/data/fonts/title-font.woff2') format('woff2');
+}
+
+/* Machine-specific backgrounds */
+.machine-card[data-game="Medieval Madness"] {
+  background-image: url('/app/data/images/machines/medieval.jpg');
+}
+```
 
 ### Creating Your Own CSS
 

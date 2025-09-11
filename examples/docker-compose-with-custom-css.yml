@@ -7,6 +7,14 @@ services:
     environment:
       - REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=${REACT_APP_DATA_REFRESH_INTERVAL_MINUTES:-60}
       - REACT_APP_GRID_COLUMNS=${REACT_APP_GRID_COLUMNS:-1}
+      # Enable custom CSS overrides using data volume
+      - CUSTOM_CSS_PATH=/app/data/custom.css
+    volumes:
+      # Mount your custom assets directory containing CSS, images, fonts, etc.
+      # Update the path on the left to your assets directory location
+      - ./data:/app/data:ro
+      # Alternative: Mount specific custom assets directory
+      # - /path/to/your/custom/assets:/app/data:ro
     depends_on:
       - backend
   backend:
