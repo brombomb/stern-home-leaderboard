@@ -4,6 +4,7 @@ import { useMachinesData } from '../hooks/useMachinesData';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 import MachineCard from '../components/MachineCard';
+import { GRID_COLUMNS } from '../config';
 import './MachinesPage.css';
 
 function MachinesPage() {
@@ -167,6 +168,20 @@ function MachinesPage() {
 
   return (
     <div className="machines-page" ref={pageRef}>
+      {/* Debug indicator */}
+      <div style={{
+        position: 'fixed',
+        top: '60px',
+        right: '20px',
+        background: 'rgba(0,0,0,0.8)',
+        color: 'white',
+        padding: '10px',
+        borderRadius: '4px',
+        fontSize: '12px',
+        zIndex: 1002,
+      }}>
+        Grid Columns: {GRID_COLUMNS}
+      </div>
       {isScrollPaused && (
         <div className="scroll-pause-indicator visible">
           Auto-scroll paused{resumeCountdown > 0 ? ` - resuming in ${resumeCountdown}s` : ' - will resume in a few seconds'}
@@ -175,7 +190,12 @@ function MachinesPage() {
       {machines.length === 0 ? (
         <div className="no-machines-message">No machines found.</div>
       ) : (
-        <div className="machines-container">
+        <div
+          className="machines-container"
+          style={{
+            '--grid-columns': GRID_COLUMNS,
+          }}
+        >
           {machines.map(machine => (
             <MachineCard
               key={machine.id}

@@ -2,3 +2,8 @@
 node_modules/
 dist/
 build/
+
+# User data directory (contains custom assets)
+data/
+!data/README.md
+!data/custom.css
