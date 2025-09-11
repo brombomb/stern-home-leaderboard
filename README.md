@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="frontend/public/pinball.svg" alt="Pinball Logo" width="80" height="80">
+</p>
+
 # Stern Home Leaderboard
 
 A web application for displaying pinball machine high scores from Stern Pinball's home network. This application connects to Stern's API to fetch machine data, high scores, and player avatars, presenting them in a clean, visual interface.
@@ -5,12 +9,19 @@ A web application for displaying pinball machine high scores from Stern Pinball'
 ## 🎯 Features
 
 - **Real-time High Scores**: Displays current high scores for all registered Stern pinball machines
+- **Automatic Data Refresh**: Configurable periodic refresh of machine data and high scores
 - **Player Avatars**: Shows player profile pictures and custom backgrounds from Stern's network
 - **Machine Status**: Visual indicators for online/offline machine status
 - **Game Branding**: Dynamic backgrounds and logos for each pinball machine
 - **Fullscreen Mode**: Display individual machines in fullscreen for kiosks or dedicated displays
 - **Responsive Design**: Works on desktop and mobile devices
 - **Auto-authentication**: Handles Stern API authentication automatically with retry logic
+
+## ☕ Support
+
+If you find this project helpful, consider supporting my work:
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y01L3NIG)
 
 ## 🏗️ Architecture
 
@@ -58,6 +69,9 @@ A web application for displaying pinball machine high scores from Stern Pinball'
    DEFAULT_STATE=CO
    DEFAULT_STATE_NAME=Colorado
    DEFAULT_CONTINENT=NA
+
+   # Optional: Frontend data refresh interval in minutes (default: 60)
+   REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=60
    ```
 
 3. **Start the application**
@@ -179,6 +193,11 @@ stern-home-leaderboard/
 - `DEFAULT_STATE_NAME`: Default state name (default: "Colorado")
 - `DEFAULT_CONTINENT`: Default continent code (default: "NA")
 
+#### Frontend Configuration
+- `REACT_APP_DATA_REFRESH_INTERVAL_MINUTES`: How often to automatically refresh machine data in minutes (default: 60)
+
+> **⚠️ Important**: Setting the refresh interval too low (less than 30 minutes) may result in account lockouts from Stern's API due to rate limiting. Use conservative refresh intervals to avoid service interruptions.
+
 ### API Endpoints
 
 The backend provides the following API endpoints:
@@ -242,6 +261,25 @@ To get a machine ID for direct URL access:
 4. Use this ID to create direct links or bookmarks
 
 ## 🐳 Docker Deployment
+
+### Environment Variables for Docker
+
+When using Docker Compose, you can configure all environment variables in your `.env` file:
+
+```env
+# Required: Stern Pinball credentials
+STERN_USERNAME=your_stern_username
+STERN_PASSWORD=your_stern_password
+
+# Optional: Default location (defaults to Colorado, USA)
+DEFAULT_COUNTRY=US
+DEFAULT_STATE=CO
+DEFAULT_STATE_NAME=Colorado
+DEFAULT_CONTINENT=NA
+
+# Optional: Frontend data refresh interval in minutes (default: 60)
+REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=60
+```
 
 ### Production Build
 ```bash
