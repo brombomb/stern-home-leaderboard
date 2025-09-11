@@ -168,20 +168,6 @@ function MachinesPage() {
 
   return (
     <div className="machines-page" ref={pageRef}>
-      {/* Debug indicator */}
-      <div style={{
-        position: 'fixed',
-        top: '60px',
-        right: '20px',
-        background: 'rgba(0,0,0,0.8)',
-        color: 'white',
-        padding: '10px',
-        borderRadius: '4px',
-        fontSize: '12px',
-        zIndex: 1002,
-      }}>
-        Grid Columns: {GRID_COLUMNS}
-      </div>
       {isScrollPaused && (
         <div className="scroll-pause-indicator visible">
           Auto-scroll paused{resumeCountdown > 0 ? ` - resuming in ${resumeCountdown}s` : ' - will resume in a few seconds'}
