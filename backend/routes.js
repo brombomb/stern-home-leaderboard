@@ -56,13 +56,9 @@ const makeApiCall = async (url, req, res, errorMessage, retryCount = 0) => {
 
     // Handle 403 Forbidden - likely authentication issue
     if (response.status === 403 && retryCount < MAX_RETRIES) {
-      console.log(`Received 403 response, attempting to refresh auth (retry ${retryCount + 1}/${MAX_RETRIES})`);
-
       // Attempt to refresh authentication
       const refreshed = await SternAuth.refreshAuth();
       if (refreshed) {
-        console.log('Authentication refreshed, retrying API call...');
-
         // Update request with new auth data
         req.authData = SternAuth.authData;
         req.cookies = SternAuth.cookies;
@@ -86,11 +82,6 @@ const makeApiCall = async (url, req, res, errorMessage, retryCount = 0) => {
     return res.json(data);
   } catch (err) {
     console.error(`${errorMessage}:`, err.message);
-
-    // If this was a retry attempt, provide more context
-    if (retryCount > 0) {
-      console.error(`Failed after ${retryCount} retry attempts`);
-    }
 
     return res.status(500).json({
       error: errorMessage,
@@ -151,12 +142,10 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
               model: machine.model || detailsData.model,
             };
           } else {
-            console.warn(`Failed to fetch details for machine ${machine.id}: ${detailsResponse.status}`);
             // Return basic machine data if details fetch fails
             return machine;
           }
-        } catch (err) {
-          console.warn(`Error fetching details for machine ${machine.id}:`, err.message);
+        } catch {
           // Return basic machine data if details fetch fails
           return machine;
         }
@@ -167,12 +156,6 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
     const successfulMachines = detailedMachines
       .filter(result => result.status === 'fulfilled')
       .map(result => result.value);
-
-    const failedCount = detailedMachines.filter(result => result.status === 'rejected').length;
-
-    if (failedCount > 0) {
-      console.warn(`Failed to fetch details for ${failedCount} machine(s)`);
-    }
 
     // Return the enhanced machines data in the same format as the original API
     res.json({

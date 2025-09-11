@@ -11,8 +11,6 @@ class SternAuth {
       // Send login data as JSON array like the browser does
       const loginData = [username, password];
 
-      console.log('Sending login data:', loginData);
-
       // Submit login form with exact headers from HAR file
       const loginResponse = await fetch('https://insider.sternpinball.com/login', {
         method: 'POST',
@@ -39,12 +37,8 @@ class SternAuth {
         redirect: 'manual',
       });
 
-      console.log('Login response status:', loginResponse.status);
-      console.log('Login response headers:', Object.fromEntries(loginResponse.headers.entries()));
-
       // Extract cookies and check for JWT token
       const cookies = loginResponse.headers.get('set-cookie');
-      console.log('Extracted cookies:', cookies);
 
       // Look for spb-insider-token in cookies
       let token = null;
@@ -52,18 +46,15 @@ class SternAuth {
         const tokenMatch = cookies.match(/spb-insider-token=([^;]+)/);
         if (tokenMatch) {
           token = tokenMatch[1];
-          console.log('Found spb-insider-token:', token);
         }
       }
 
-      // Get response body for debugging
+      // Get response body
       const responseText = await loginResponse.text();
-      console.log('Response body:', responseText);
 
       const authData = {};
       if (token) {
         authData.token = token;
-        console.log('Using token from cookie:', token);
       }
 
       // Parse the response to check authentication status
@@ -76,20 +67,17 @@ class SternAuth {
             const jsonMatch = line.match(/\{.*\}/);
             if (jsonMatch) {
               const authResult = JSON.parse(jsonMatch[0]);
-              console.log('Authentication result:', authResult);
               authenticationSuccessful = authResult.authenticated === true;
               break;
             }
           }
         }
-      } catch (e) {
-        console.log('Could not parse authentication result:', e.message);
+      } catch {
+        // Could not parse authentication result, continue with token check
       }
 
       // Check login success
       if (loginResponse.status === 200 && (authenticationSuccessful || token)) {
-        console.log('Login successful');
-
         // Store auth data globally
         SternAuth.authData = authData;
         SternAuth.cookies = cookies || '';
@@ -97,7 +85,6 @@ class SternAuth {
 
         return { success: true, authData, cookies };
       } else {
-        console.log('Login failed - authenticated:', authenticationSuccessful, 'token:', !!token);
         return { success: false, error: 'Login failed - authentication unsuccessful' };
       }
     } catch (err) {
@@ -116,7 +103,6 @@ class SternAuth {
       process.exit(1);
     }
 
-    console.log('Initializing authentication on startup...');
     const result = await this.login(username, password);
 
     if (!result.success) {
@@ -126,7 +112,6 @@ class SternAuth {
       return { success: false, error: result.error };
     }
 
-    console.log('Authentication successful on startup');
     return result;
   }
 
@@ -141,11 +126,9 @@ class SternAuth {
     const username = process.env.STERN_USERNAME;
     const password = process.env.STERN_PASSWORD;
 
-    console.log('Refreshing authentication...');
     const result = await this.login(username, password);
 
     if (result.success) {
-      console.log('Authentication refreshed successfully');
       return true;
     } else {
       console.error('Failed to refresh authentication:', result.error);
@@ -156,8 +139,6 @@ class SternAuth {
   static async requireAuth(req, res, next) {
     // Check if we have auth data and if it's still valid
     if (!SternAuth.authData || !SternAuth.cookies || SternAuth.isAuthExpired()) {
-      console.log('Auth data missing or expired, attempting to refresh...');
-
       const refreshed = await SternAuth.refreshAuth();
       if (!refreshed) {
         return res.status(401).json({ error: 'Authentication failed and could not be refreshed' });
