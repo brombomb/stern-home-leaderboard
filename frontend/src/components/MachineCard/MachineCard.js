@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import HighScoresTable from '../HighScoresTable';
 import { setQueryParams } from '../../utils/queryParams';
 
@@ -9,7 +9,7 @@ function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighS
   const gameName = machine.model?.title?.name || 'Game Logo';
 
   const cardStyle = backgroundImage ? {
-    backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${backgroundImage})`
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${backgroundImage})`,
   } : {};
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighS
   const handleFullscreen = () => {
     setQueryParams({
       machine: String(machine.id), // Ensure it's always a string
-      fullscreen: 'true'
+      fullscreen: 'true',
     });
   };
 
@@ -32,7 +32,7 @@ function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighS
       style={cardStyle}
     >
       <div className="status-indicator" title={machine.online ? 'Online' : 'Offline'}>
-        <span className={machine.online ? 'status-dot-online' : 'status-dot-offline'}></span>
+        <span className={machine.online ? 'status-dot-online' : 'status-dot-offline'} />
       </div>
 
       <div className="machine-header">

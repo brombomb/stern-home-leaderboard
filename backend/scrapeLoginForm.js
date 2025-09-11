@@ -13,7 +13,9 @@ async function scrapeLoginForm() {
   form.find('input').each((i, el) => {
     const name = $(el).attr('name');
     const value = $(el).attr('value') || '';
-    if (name) inputs[name] = value;
+    if (name) {
+      inputs[name] = value;
+    }
   });
   return { action, method, inputs };
 }

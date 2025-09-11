@@ -88,6 +88,57 @@ npm install
 npm run dev
 ```
 
+### Code Quality & Linting
+
+This project uses ESLint to ensure consistent code quality and style across both frontend and backend codebases.
+
+#### ESLint Configuration
+
+- **Frontend**: Uses ESLint 8 with React-specific rules and Create React App configuration
+- **Backend**: Uses ESLint 9 with Node.js-specific rules and flat config format
+- **Root**: Provides workspace-wide linting commands
+
+#### Running ESLint
+
+```bash
+# Lint all projects from root
+npm run lint
+
+# Auto-fix issues where possible
+npm run lint:fix
+
+# Lint individual projects
+cd frontend && npm run lint
+cd backend && npm run lint
+
+# Fix individual projects
+cd frontend && npm run lint:fix
+cd backend && npm run lint:fix
+```
+
+#### ESLint Rules Highlights
+
+**Frontend (React)**:
+- React hooks rules enforcement
+- JSX accessibility checks
+- Modern JavaScript standards (ES2022)
+- Consistent code formatting
+- React best practices
+
+**Backend (Node.js)**:
+- Node.js-specific rules
+- Security best practices
+- Modern JavaScript standards (ES2022)
+- Error prevention rules
+- Code style consistency
+
+#### IDE Integration
+
+For the best development experience, install ESLint extensions in your IDE:
+- **VS Code**: ESLint extension by Microsoft
+- **WebStorm**: Built-in ESLint support
+- **Vim/Neovim**: ALE or CoC plugins
+
 ### Offline Development
 For development without Stern API access:
 ```bash

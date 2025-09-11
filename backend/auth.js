@@ -33,7 +33,7 @@ class SternAuth {
           'Sec-Fetch-Mode': 'cors',
           'Sec-Fetch-Site': 'same-origin',
           'Pragma': 'no-cache',
-          'Cache-Control': 'no-cache'
+          'Cache-Control': 'no-cache',
         },
         body: JSON.stringify(loginData),
         redirect: 'manual',
@@ -60,7 +60,7 @@ class SternAuth {
       const responseText = await loginResponse.text();
       console.log('Response body:', responseText);
 
-      let authData = {};
+      const authData = {};
       if (token) {
         authData.token = token;
         console.log('Using token from cookie:', token);
@@ -112,6 +112,7 @@ class SternAuth {
 
     if (!username || !password) {
       console.error('STERN_USERNAME and STERN_PASSWORD environment variables are required');
+      // eslint-disable-next-line no-process-exit
       process.exit(1);
     }
 
@@ -130,7 +131,9 @@ class SternAuth {
   }
 
   static isAuthExpired() {
-    if (!SternAuth.lastAuthTime) return true;
+    if (!SternAuth.lastAuthTime) {
+      return true;
+    }
     return (Date.now() - SternAuth.lastAuthTime) > SternAuth.AUTH_EXPIRY_TIME;
   }
 

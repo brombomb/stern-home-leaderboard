@@ -96,12 +96,8 @@ router.get('/game-teams/:locationId', (req, res) => {
 
 // List available offline files (for debugging)
 router.get('/offline-files', (req, res) => {
-  try {
-    const files = fs.readdirSync(offlineDataPath);
-    res.json({ files });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to list offline files' });
-  }
+  const files = fs.readdirSync(offlineDataPath);
+  res.json({ files });
 });
 
 module.exports = router;

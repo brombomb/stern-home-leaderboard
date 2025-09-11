@@ -19,5 +19,22 @@
         "titleBar.inactiveBackground": "#fe23eb99",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#fe23eb"
+    "peacock.color": "#fe23eb",
+    "eslint.workingDirectories": [
+        "./frontend",
+        "./backend"
+    ],
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "files.associations": {
+        "*.js": "javascript",
+        "*.jsx": "javascriptreact"
+    }
 }

@@ -12,7 +12,7 @@ const DEFAULT_LOCATION = JSON.stringify({
   country: process.env.DEFAULT_COUNTRY || 'US',
   state: process.env.DEFAULT_STATE || 'CO',
   stateName: process.env.DEFAULT_STATE_NAME || 'Colorado',
-  continent: process.env.DEFAULT_CONTINENT || 'NA'
+  continent: process.env.DEFAULT_CONTINENT || 'NA',
 });
 
 // Helper function to create standard headers
@@ -32,7 +32,7 @@ const createHeaders = (req) => {
     'Sec-Fetch-Mode': 'cors',
     'Sec-Fetch-Site': 'cross-site',
     'Pragma': 'no-cache',
-    'Location': DEFAULT_LOCATION
+    'Location': DEFAULT_LOCATION,
   };
 
   if (req.cookies) {
@@ -73,7 +73,7 @@ const makeApiCall = async (url, req, res, errorMessage, retryCount = 0) => {
         console.error('Failed to refresh authentication after 403 response');
         return res.status(401).json({
           error: 'Authentication expired and refresh failed',
-          details: 'Please check your credentials'
+          details: 'Please check your credentials',
         });
       }
     }
@@ -95,7 +95,7 @@ const makeApiCall = async (url, req, res, errorMessage, retryCount = 0) => {
     return res.status(500).json({
       error: errorMessage,
       details: err.message,
-      retryAttempts: retryCount
+      retryAttempts: retryCount,
     });
   }
 };
@@ -114,7 +114,7 @@ router.post('/reauth', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Re-authentication failed',
-      details: err.message
+      details: err.message,
     });
   }
 });

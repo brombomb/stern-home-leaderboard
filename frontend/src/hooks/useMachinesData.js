@@ -37,7 +37,7 @@ export function useMachinesData() {
           if (member.username && member.avatar_url) {
             avatarMap[member.username.toLowerCase()] = {
               avatar_url: member.avatar_url,
-              background_color: member.background_color
+              background_color: member.background_color,
             };
           }
         });
@@ -79,6 +79,6 @@ export function useMachinesData() {
     loading,
     loadingScores,
     error,
-    fetchHighScores
+    fetchHighScores,
   };
 }

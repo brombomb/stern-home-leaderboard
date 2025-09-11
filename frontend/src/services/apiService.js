@@ -4,13 +4,13 @@ class ApiService {
   async makeRequest(url, options = {}) {
     const response = await fetch(url, {
       credentials: 'include',
-      ...options
+      ...options,
     });
 
     if (response.status === 403) {
       const reAuthResponse = await fetch(`${API_BASE_URL}/api/reauth`, {
         method: 'POST',
-        credentials: 'include'
+        credentials: 'include',
       });
 
       if (reAuthResponse.ok) {

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useMachinesData } from '../hooks/useMachinesData';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
@@ -13,11 +13,15 @@ function MachinesPage() {
     loading,
     loadingScores,
     error,
-    fetchHighScores
+    fetchHighScores,
   } = useMachinesData();
 
-  if (loading) return <Loader />;
-  if (error) return <ErrorMessage message={error} />;
+  if (loading) {
+    return <Loader />;
+  }
+  if (error) {
+    return <ErrorMessage message={error} />;
+  }
 
   return (
     <div className="machines-page">

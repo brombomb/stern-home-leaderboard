@@ -4,7 +4,7 @@ export function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
   return {
     machineId: params.get('machine'),
-    fullscreen: params.get('fullscreen') === 'true'
+    fullscreen: params.get('fullscreen') === 'true',
   };
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 function PlayerInfo({ username, avatarData }) {
   const avatarUrl = avatarData?.avatar_url;

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import HighScoresTable from '../HighScoresTable';
 import { clearQueryParams } from '../../utils/queryParams';
 import './FullscreenMachine.css';
@@ -13,10 +13,10 @@ function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetc
     backgroundImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url(${backgroundImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat'
+    backgroundRepeat: 'no-repeat',
   } : {};
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Fetch high scores when component mounts
     if (!highScores[machine.id] && !loadingScores[machine.id]) {
       onFetchHighScores(machine.id);
@@ -28,7 +28,7 @@ function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetc
   };
 
   // Handle escape key to exit fullscreen
-  React.useEffect(() => {
+  useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.key === 'Escape') {
         handleExit();
@@ -45,18 +45,18 @@ function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetc
         {/* Header with game logo and status */}
         <div className="fullscreen-header">
           <div className="game-logo-container">
-              <img
-                src={variableWidthLogo ? variableWidthLogo : squareLogo}
-                alt={gameName}
-                className="fullscreen-game-logo"
-                onClick={handleExit}
-                title="Click to exit fullscreen"
-              />
+            <img
+              src={variableWidthLogo ? variableWidthLogo : squareLogo}
+              alt={gameName}
+              className="fullscreen-game-logo"
+              onClick={handleExit}
+              title="Click to exit fullscreen"
+            />
           </div>
 
           <div className="status-container">
             <div className="status-indicator-large" title={machine.online ? 'Online' : 'Offline'}>
-              <span className={machine.online ? 'status-dot-online-large' : 'status-dot-offline-large'}></span>
+              <span className={machine.online ? 'status-dot-online-large' : 'status-dot-offline-large'} />
             </div>
           </div>
         </div>
@@ -77,13 +77,13 @@ function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetc
           <div className="last-played-large">
             Last Played: {machine.last_played
               ? new Date(machine.last_played).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              })
               : 'Never'
             }
           </div>

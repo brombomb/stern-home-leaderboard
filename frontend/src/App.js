@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import MachinesPage from './pages/MachinesPage';
 import FullscreenMachine from './components/FullscreenMachine';
 import { useMachinesData } from './hooks/useMachinesData';
@@ -15,7 +15,7 @@ function App() {
     loading,
     loadingScores,
     error,
-    fetchHighScores
+    fetchHighScores,
   } = useMachinesData();
 
   // Listen for URL changes
@@ -44,8 +44,12 @@ function App() {
 
   // If we're in fullscreen mode and have a machine ID
   if (queryParams.fullscreen && queryParams.machineId) {
-    if (loading) return <Loader />;
-    if (error) return <ErrorMessage message={error} />;
+    if (loading) {
+      return <Loader />;
+    }
+    if (error) {
+      return <ErrorMessage message={error} />;
+    }
 
     // Convert machineId to both string and number for comparison
     const machineIdStr = queryParams.machineId;
@@ -54,7 +58,7 @@ function App() {
     const machine = machines.find(m =>
       m.id === machineIdStr ||
       m.id === machineIdNum ||
-      String(m.id) === machineIdStr
+      String(m.id) === machineIdStr,
     );
 
     if (!machine) {
