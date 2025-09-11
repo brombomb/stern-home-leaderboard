@@ -1,0 +1,221 @@
+/* Example Custom CSS Overrides for Stern Home Leaderboard */
+/*
+ * This is an example file showing how to customize the appearance
+ * of your Stern Home Leaderboard using custom CSS overrides.
+ *
+ * To use this file:
+ * 1. Copy it to your desired location on the host machine
+ * 2. Set CUSTOM_CSS_PATH environment variable
+ * 3. Mount it as a volume in docker-compose.yml
+ * 4. Restart the container
+ */
+
+/* ===== GLOBAL THEME CHANGES ===== */
+
+/* Custom background gradient */
+body {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%) !important;
+  background-attachment: fixed;
+}
+
+/* Custom accent color */
+:root {
+  --custom-accent: #ffd700; /* Gold accent */
+  --custom-accent-hover: #ffed4a;
+}
+
+/* ===== TYPOGRAPHY ===== */
+
+/* Custom heading colors */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--custom-accent) !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Custom font family */
+body, button, input, select, textarea {
+  font-family: 'Orbitron', 'Roboto', 'Arial', sans-serif !important;
+}
+
+/* ===== MACHINE CARDS ===== */
+
+/* Custom machine card styling */
+.machine-card {
+  border: 2px solid var(--custom-accent) !important;
+  border-radius: 15px !important;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.machine-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4) !important;
+}
+
+/* ===== HIGH SCORES TABLE ===== */
+
+/* Custom table styling */
+.high-scores-table {
+  background: rgba(255, 215, 0, 0.1) !important;
+  border-radius: 10px !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Custom score text */
+.high-scores-table .score {
+  color: var(--custom-accent) !important;
+  font-weight: bold !important;
+}
+
+/* Grand Champion highlighting */
+.high-scores-table .rank-1 {
+  background: linear-gradient(45deg, #ffd700, #ffed4a) !important;
+  color: #000 !important;
+  border-radius: 5px !important;
+  padding: 2px 4px !important;
+}
+
+/* ===== BUTTONS ===== */
+
+/* Custom button styling */
+button {
+  background: linear-gradient(45deg, var(--custom-accent), var(--custom-accent-hover)) !important;
+  color: #000 !important;
+  border: none !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
+
+button:hover {
+  background: linear-gradient(45deg, var(--custom-accent-hover), var(--custom-accent)) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4) !important;
+}
+
+/* ===== STATUS INDICATORS ===== */
+
+/* Online status */
+.status-online {
+  color: #4caf50 !important;
+  text-shadow: 0 0 5px #4caf50 !important;
+}
+
+/* Offline status */
+.status-offline {
+  color: #f44336 !important;
+  text-shadow: 0 0 5px #f44336 !important;
+}
+
+/* ===== PLAYER INFO ===== */
+
+/* Player avatar border */
+.player-avatar {
+  border: 2px solid var(--custom-accent) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5) !important;
+}
+
+/* Player name styling */
+.player-name {
+  color: var(--custom-accent) !important;
+  font-weight: bold !important;
+}
+
+/* ===== LOADING AND ERROR STATES ===== */
+
+/* Custom loader colors */
+.loader {
+  color: var(--custom-accent) !important;
+}
+
+/* Error message styling */
+.error-message {
+  background: rgba(244, 67, 54, 0.1) !important;
+  border: 1px solid #f44336 !important;
+  border-radius: 8px !important;
+  color: #ffcdd2 !important;
+}
+
+/* ===== FULLSCREEN MODE ===== */
+
+/* Fullscreen enhancements */
+.fullscreen-mode {
+  background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%) !important;
+}
+
+.fullscreen-mode .machine-card {
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.5) !important;
+}
+
+/* ===== SCROLLBAR CUSTOMIZATION ===== */
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(26, 26, 46, 0.5) !important;
+  border-radius: 6px !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--custom-accent), var(--custom-accent-hover)) !important;
+  border-radius: 6px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, var(--custom-accent-hover), var(--custom-accent)) !important;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Mobile customizations */
+@media (max-width: 768px) {
+  .machine-card {
+    margin: 10px 5px !important;
+  }
+
+  h1 {
+    font-size: 1.8rem !important;
+  }
+}
+
+/* Tablet customizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .machine-card {
+    margin: 15px 10px !important;
+  }
+}
+
+/* ===== ANIMATION EFFECTS ===== */
+
+/* Glow animation for accent elements */
+@keyframes glow {
+  0% { box-shadow: 0 0 5px var(--custom-accent); }
+  50% { box-shadow: 0 0 20px var(--custom-accent), 0 0 30px var(--custom-accent); }
+  100% { box-shadow: 0 0 5px var(--custom-accent); }
+}
+
+.machine-card:hover {
+  animation: glow 2s infinite !important;
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Add these classes to specific elements if needed */
+.custom-highlight {
+  background: var(--custom-accent) !important;
+  color: #000 !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+}
+
+.custom-border {
+  border: 1px solid var(--custom-accent) !important;
+}
+
+.custom-text {
+  color: var(--custom-accent) !important;
+}

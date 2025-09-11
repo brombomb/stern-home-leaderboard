@@ -8,6 +8,8 @@
     "react-scripts": "^5.0.1"
   },
   "scripts": {
+    "prestart": "node scripts/inject-custom-css.js",
+    "prebuild": "node scripts/inject-custom-css.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

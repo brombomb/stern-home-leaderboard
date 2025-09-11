@@ -6,10 +6,11 @@ services:
       - "3000:3000"
     environment:
       - REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=${REACT_APP_DATA_REFRESH_INTERVAL_MINUTES:-60}
-      - CUSTOM_CSS_PATH=${CUSTOM_CSS_PATH}
-    # volumes:
-      # Uncomment and modify the following line to mount your custom CSS file:
-      # - /path/to/your/custom.css:/app/custom-css/overrides.css:ro
+      # Enable custom CSS overrides
+      - CUSTOM_CSS_PATH=/app/custom-css/overrides.css
+    volumes:
+      # Mount your custom CSS file (update the path on the left to your CSS file location)
+      - ./examples/custom-styles.css:/app/custom-css/overrides.css:ro
     depends_on:
       - backend
   backend:

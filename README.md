@@ -4,7 +4,108 @@
 
 # Stern Home Leaderboard
 
-A web application for displaying pinball machine high scores from Stern Pinball's home network. This application connects to Stern's API to fetch machine data, high scores, and player avatars, presenting them in a clean, visual interface.
+A web application for displaying pinball machine high scores from Stern Pinball's home network. This application connects to Ste3. Use this ID to create direct links or bookmarks
+
+## 🎨 Custom CSS Overrides
+
+The application supports custom CSS overrides to personalize the appearance of your leaderboard. You can provide your own CSS file that will be loaded last, allowing you to override any existing styles.
+
+### Setting Up Custom CSS
+
+1. **Create your custom CSS file**
+
+   Create a CSS file with your custom styles. For example, `my-custom-styles.css`:
+   ```css
+   /* Custom CSS overrides for Stern Home Leaderboard */
+
+   /* Change the background color */
+   body {
+     background: linear-gradient(45deg, #1a1a2e, #16213e);
+   }
+
+   /* Customize machine card appearance */
+   .machine-card {
+     border: 2px solid #e53935;
+     border-radius: 10px;
+   }
+
+   /* Change text colors */
+   h1, h2, h3 {
+     color: #ffd700;
+   }
+
+   /* Custom button styles */
+   button {
+     background: linear-gradient(45deg, #e53935, #ff6b6b);
+   }
+   ```
+
+2. **Configure environment variable**
+
+   Set the `CUSTOM_CSS_PATH` environment variable to point to your CSS file location inside the container:
+   ```env
+   CUSTOM_CSS_PATH=/app/custom-css/overrides.css
+   ```
+
+3. **Mount your CSS file using Docker volumes**
+
+   Update your `docker-compose.yml` to mount your custom CSS file:
+   ```yaml
+   services:
+     frontend:
+       build: ./frontend
+       ports:
+         - "3000:3000"
+       environment:
+         - CUSTOM_CSS_PATH=/app/custom-css/overrides.css
+       volumes:
+         - /path/to/your/my-custom-styles.css:/app/custom-css/overrides.css:ro
+       depends_on:
+         - backend
+   ```
+
+4. **Start the application**
+   ```bash
+   docker-compose up --build
+   ```
+
+### How It Works
+
+1. **Injection Process**: When the container starts, a script checks for the existence of the custom CSS file specified in `CUSTOM_CSS_PATH`
+2. **Style Injection**: If found, the CSS content is injected into the HTML `<head>` section as a `<style>` tag
+3. **Override Priority**: The custom CSS is loaded last, ensuring it can override any existing styles
+4. **Dynamic Updates**: If you remove the custom CSS file and restart, the injected styles will be automatically removed
+
+### Example Use Cases
+
+- **Branding**: Apply your own color scheme and fonts
+- **Theme Customization**: Create dark/light theme variations
+- **Layout Adjustments**: Modify spacing, sizes, and positioning
+- **Machine-Specific Styling**: Target specific machine cards with custom CSS classes
+- **Tournament Mode**: Special styling for tournament displays
+- **Accessibility**: Adjust colors and fonts for better visibility
+
+### CSS Class Reference
+
+The application uses semantic CSS class names that you can target:
+
+- `.machine-card` - Individual machine display cards
+- `.high-scores-table` - High scores table container
+- `.player-info` - Player name and avatar display
+- `.machine-status` - Online/offline status indicators
+- `.error-message` - Error display component
+- `.loader` - Loading spinner component
+
+### Troubleshooting Custom CSS
+
+- **Styles not applying**: Ensure the CSS file path is correct and the file is mounted properly
+- **File not found**: Check the volume mount path and verify the file exists on the host
+- **Override not working**: Use more specific CSS selectors or `!important` declarations
+- **Changes not visible**: Rebuild the container with `docker-compose up --build`
+
+For development, you can test CSS changes by temporarily editing the styles directly in your browser's developer tools before creating your custom CSS file.
+
+## 🐳 Docker Deployments API to fetch machine data, high scores, and player avatars, presenting them in a clean, visual interface.
 
 ## 🎯 Features
 
@@ -72,6 +173,9 @@ If you find this project helpful, consider supporting my work:
 
    # Optional: Frontend data refresh interval in minutes (default: 60)
    REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=60
+
+   # Optional: Custom CSS overrides file path (inside container)
+   CUSTOM_CSS_PATH=/app/custom-css/overrides.css
    ```
 
 3. **Start the application**
@@ -279,6 +383,9 @@ DEFAULT_CONTINENT=NA
 
 # Optional: Frontend data refresh interval in minutes (default: 60)
 REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=60
+
+# Optional: Custom CSS overrides file path (inside container)
+CUSTOM_CSS_PATH=/app/custom-css/overrides.css
 ```
 
 ### Production Build
