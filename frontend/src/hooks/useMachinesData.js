@@ -60,10 +60,12 @@ export function useMachinesData() {
     setError('');
     try {
       const userMachines = await apiService.fetchMachines();
-      setMachines(userMachines);
+      // Filter out archived machines
+      const nonArchivedMachines = userMachines.filter(machine => !machine.archived);
+      setMachines(nonArchivedMachines);
       setLastRefresh(new Date());
 
-      const locationId = userMachines[0]?.address?.location_id;
+      const locationId = nonArchivedMachines[0]?.address?.location_id;
       if (locationId) {
         fetchAvatars(locationId);
       }
