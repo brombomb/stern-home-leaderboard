@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import HighScoresTable from '../HighScoresTable';
+import TechAlerts from '../TechAlerts';
 import { setQueryParams } from '../../utils/queryParams';
 
 function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighScores }) {
@@ -31,8 +32,12 @@ function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighS
       className={`machine-card ${backgroundImage ? 'with-background' : ''}`}
       style={cardStyle}
     >
-      <div className="status-indicator" title={machine.online ? 'Online' : 'Offline'}>
-        <span className={machine.online ? 'status-dot-online' : 'status-dot-offline'} />
+      <div className="status-indicator">
+        <span
+          className={machine.online ? 'status-dot-online' : 'status-dot-offline'}
+          title={machine.online ? 'Online' : 'Offline'}
+        />
+        <TechAlerts techAlerts={machine.last_seven_day_tech_alerts} />
       </div>
 
       <div className="machine-header">

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import HighScoresTable from '../HighScoresTable';
+import TechAlerts from '../TechAlerts';
 import { clearQueryParams } from '../../utils/queryParams';
 import './FullscreenMachine.css';
 
@@ -61,8 +62,12 @@ function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetc
           </div>
 
           <div className="status-container">
-            <div className="status-indicator-large" title={machine.online ? 'Online' : 'Offline'}>
-              <span className={machine.online ? 'status-dot-online-large' : 'status-dot-offline-large'} />
+            <div className="status-indicator-large">
+              <span
+                className={machine.online ? 'status-dot-online-large' : 'status-dot-offline-large'}
+                title={machine.online ? 'Online' : 'Offline'}
+              />
+              <TechAlerts techAlerts={machine.last_seven_day_tech_alerts} />
             </div>
           </div>
         </div>

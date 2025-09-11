@@ -110,6 +110,24 @@
   backdrop-filter: blur(10px);
 }
 
+/* Scale up tech alerts for fullscreen */
+.status-indicator-large .tech-alerts-button {
+  padding: 6px;
+}
+
+.status-indicator-large .alert-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.status-indicator-large .alert-badge {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  top: -3px;
+  right: -3px;
+}
+
 .status-dot-online-large,
 .status-dot-offline-large {
   width: 16px;

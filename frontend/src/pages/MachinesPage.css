@@ -113,12 +113,22 @@
   z-index: 2;
 }
 
+/* Base status indicator styles */
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* Status indicator in upper right corner */
 .machine-card.with-background .status-indicator {
   position: absolute;
   top: 1rem;
   right: 2.5rem;
   z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .status-dot-online,

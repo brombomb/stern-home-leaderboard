@@ -121,8 +121,75 @@ router.post('/reauth', async (req, res) => {
 
 // Machines endpoint - protected by auth middleware
 router.get('/machines', SternAuth.requireAuth, async (req, res) => {
-  const url = `${API_BASE_URL}/user_registered_machines/?group_type=home`;
-  await makeApiCall(url, req, res, 'Failed to fetch machines');
+  try {
+    // First, fetch the basic machines list
+    const machinesUrl = `${API_BASE_URL}/user_registered_machines/?group_type=home`;
+    const headers = createHeaders(req);
+    const machinesResponse = await fetch(machinesUrl, { headers });
+
+    if (!machinesResponse.ok) {
+      throw new Error(`Failed to fetch machines list: ${machinesResponse.status}`);
+    }
+
+    const machinesData = await machinesResponse.json();
+    const basicMachines = machinesData.user?.machines || [];
+
+    // Now fetch detailed information for each machine to get tech alerts
+    const detailedMachines = await Promise.allSettled(
+      basicMachines.map(async (machine) => {
+        try {
+          const detailsUrl = `${API_BASE_URL}/game_machines/${machine.id}`;
+          const detailsResponse = await fetch(detailsUrl, { headers });
+
+          if (detailsResponse.ok) {
+            const detailsData = await detailsResponse.json();
+            // Merge basic machine data with detailed data, prioritizing detailed data
+            return {
+              ...machine,
+              ...detailsData,
+              // Preserve any fields from basic data that might not be in details
+              model: machine.model || detailsData.model,
+            };
+          } else {
+            console.warn(`Failed to fetch details for machine ${machine.id}: ${detailsResponse.status}`);
+            // Return basic machine data if details fetch fails
+            return machine;
+          }
+        } catch (err) {
+          console.warn(`Error fetching details for machine ${machine.id}:`, err.message);
+          // Return basic machine data if details fetch fails
+          return machine;
+        }
+      }),
+    );
+
+    // Extract successful results and failed ones
+    const successfulMachines = detailedMachines
+      .filter(result => result.status === 'fulfilled')
+      .map(result => result.value);
+
+    const failedCount = detailedMachines.filter(result => result.status === 'rejected').length;
+
+    if (failedCount > 0) {
+      console.warn(`Failed to fetch details for ${failedCount} machine(s)`);
+    }
+
+    // Return the enhanced machines data in the same format as the original API
+    res.json({
+      ...machinesData,
+      user: {
+        ...machinesData.user,
+        machines: successfulMachines,
+      },
+    });
+
+  } catch (err) {
+    console.error('Failed to fetch machines:', err.message);
+    res.status(500).json({
+      error: 'Failed to fetch machines',
+      details: err.message,
+    });
+  }
 });
 
 // High scores endpoint - protected by auth middleware
