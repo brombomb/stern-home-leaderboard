@@ -5,7 +5,6 @@ import { useMachinesData } from './hooks/useMachinesData';
 import { getQueryParams } from './utils/queryParams';
 import Loader from './components/Loader';
 import ErrorMessage from './components/ErrorMessage';
-import './components/FullscreenMachine.css';
 
 function App() {
   const [queryParams, setQueryParams] = useState(getQueryParams());

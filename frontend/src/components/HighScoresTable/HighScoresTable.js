@@ -1,5 +1,5 @@
 import React from 'react';
-import PlayerInfo from './PlayerInfo';
+import PlayerInfo from '../PlayerInfo';
 
 function HighScoresTable({ scores, isLoading, avatars }) {
   if (isLoading) {

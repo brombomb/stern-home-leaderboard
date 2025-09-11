@@ -1,6 +1,7 @@
 import React from 'react';
-import HighScoresTable from './HighScoresTable';
-import { clearQueryParams } from '../utils/queryParams';
+import HighScoresTable from '../HighScoresTable';
+import { clearQueryParams } from '../../utils/queryParams';
+import './FullscreenMachine.css';
 
 function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetchHighScores }) {
   const backgroundImage = machine.model?.title?.primary_background;

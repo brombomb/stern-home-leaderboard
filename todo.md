@@ -1,0 +1,8 @@
+- Add auto refresh
+- Add scrolling
+- Hide Archived
+- Tech Alerts
+    -- `last_seven_day_tech_alerts`
+    -- message	"No Alerts"
+- Custom CSS
+- 2 wide

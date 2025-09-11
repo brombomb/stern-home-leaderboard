@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import HighScoresTable from './HighScoresTable';
-import { setQueryParams } from '../utils/queryParams';
+import HighScoresTable from '../HighScoresTable';
+import { setQueryParams } from '../../utils/queryParams';
 
 function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighScores }) {
   const backgroundImage = machine.model?.title?.primary_background;
