@@ -1,22 +1,20 @@
 
 import { useEffect, useRef, useState } from 'react';
-import { useMachinesData } from '../hooks/useMachinesData';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 import MachineCard from '../components/MachineCard';
 import { GRID_COLUMNS } from '../config';
 import './MachinesPage.css';
 
-function MachinesPage() {
-  const {
-    machines,
-    highScores,
-    avatars,
-    loading,
-    loadingScores,
-    error,
-    fetchHighScores,
-  } = useMachinesData();
+function MachinesPage({
+  machines,
+  highScores,
+  avatars,
+  loading,
+  loadingScores,
+  error,
+  fetchHighScores,
+}) {
 
   const pageRef = useRef(null);
   const scrollIntervalRef = useRef(null);

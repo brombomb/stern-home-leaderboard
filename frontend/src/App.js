@@ -37,11 +37,6 @@ function App() {
     };
   }, []);
 
-  // Update query params when URL changes
-  useEffect(() => {
-    setQueryParams(getQueryParams());
-  }, [window.location.search]);
-
   // If we're in fullscreen mode and have a machine ID
   if (queryParams.fullscreen && queryParams.machineId) {
     if (loading) {
@@ -85,7 +80,15 @@ function App() {
   // Default view - show all machines
   return (
     <div className="App">
-      <MachinesPage />
+      <MachinesPage
+        machines={machines}
+        highScores={highScores}
+        avatars={avatars}
+        loading={loading}
+        loadingScores={loadingScores}
+        error={error}
+        fetchHighScores={fetchHighScores}
+      />
     </div>
   );
 }
