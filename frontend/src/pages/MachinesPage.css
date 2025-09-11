@@ -4,6 +4,26 @@
   margin: 2rem auto;
   color: #fff;
   padding: 0 1rem;
+  scroll-behavior: smooth;
+}
+
+/* Auto-scroll pause indicator */
+.scroll-pause-indicator {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(229, 57, 53, 0.9);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-pause-indicator.visible {
+  opacity: 1;
 }
 
 .page-header {

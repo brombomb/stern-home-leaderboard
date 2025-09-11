@@ -50,6 +50,12 @@ function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetc
               alt={gameName}
               className="fullscreen-game-logo"
               onClick={handleExit}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleExit();
+                }
+              }}
+              tabIndex="0"
               title="Click to exit fullscreen"
             />
           </div>

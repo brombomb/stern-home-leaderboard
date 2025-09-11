@@ -36,23 +36,19 @@ function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighS
       </div>
 
       <div className="machine-header">
-        {variableWidthLogo ? (
-          <img
-            src={variableWidthLogo}
-            alt={gameName}
-            className="game-logo"
-            onClick={handleFullscreen}
-            title="Click to view fullscreen"
-          />
-        ) : squareLogo && (
-          <img
-            src={squareLogo}
-            alt={gameName}
-            className="game-logo square"
-            onClick={handleFullscreen}
-            title="Click to view fullscreen"
-          />
-        )}
+        <img
+          src={variableWidthLogo ? variableWidthLogo : squareLogo}
+          alt={gameName}
+          className="game-logo"
+          onClick={handleFullscreen}
+          onKeyDown={e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleFullscreen();
+            }
+          }}
+          tabIndex="0"
+          title="Click to view fullscreen"
+        />
       </div>
 
       <div className="high-scores-section">
