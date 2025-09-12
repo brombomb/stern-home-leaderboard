@@ -1,51 +1,73 @@
 import { API_BASE_URL } from '../config';
 
 class ApiService {
-  async makeRequest(url, options = {}) {
-    const response = await fetch(url, {
-      credentials: 'include',
-      ...options,
-    });
+  async makeRequest(url, options = {}, retryCount = 0) {
+    const MAX_RETRIES = 2;
 
-    if (response.status === 403) {
-      const reAuthResponse = await fetch(`${API_BASE_URL}/api/reauth`, {
-        method: 'POST',
+    try {
+      const response = await fetch(url, {
         credentials: 'include',
+        ...options,
       });
 
-      if (reAuthResponse.ok) {
-        // Retry the original request
-        return fetch(url, { credentials: 'include', ...options });
-      } else {
-        throw new Error('Authentication failed and could not be refreshed');
-      }
-    }
+      // Handle 401 Unauthorized or 403 Forbidden - likely authentication issue
+      if ((response.status === 401 || response.status === 403) && retryCount < MAX_RETRIES) {
+        // Try to get error details for better error messages
+        let errorDetails = '';
+        try {
+          errorDetails = await response.clone().text();
+        } catch {
+          // Ignore error reading response body
+        }
 
-    return response;
+        const reAuthResponse = await fetch(`${API_BASE_URL}/api/reauth`, {
+          method: 'POST',
+          credentials: 'include',
+        });
+
+        if (reAuthResponse.ok) {
+          // Retry the original request
+          return this.makeRequest(url, options, retryCount + 1);
+        } else {
+          throw new Error(`Authentication failed and could not be refreshed. ${errorDetails ? `Server response: ${errorDetails}` : ''}`);
+        }
+      }
+
+      // For non-auth errors, include response details in error
+      if (!response.ok) {
+        let errorDetails = '';
+        try {
+          errorDetails = await response.clone().text();
+        } catch {
+          // Ignore error reading response body
+        }
+
+        throw new Error(`Request failed with status ${response.status}${errorDetails ? `: ${errorDetails}` : ''}`);
+      }
+
+      return response;
+    } catch (error) {
+      // Re-throw the error with additional context if it's a network error
+      if (error.name === 'TypeError' || error.message.includes('fetch')) {
+        throw new Error(`Network error: ${error.message}`);
+      }
+      throw error;
+    }
   }
 
   async fetchMachines() {
     const response = await this.makeRequest(`${API_BASE_URL}/api/machines`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch machines');
-    }
     const data = await response.json();
     return data.user?.machines || [];
   }
 
   async fetchHighScores(machineId) {
     const response = await this.makeRequest(`${API_BASE_URL}/api/high-scores/${machineId}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch high scores');
-    }
     return response.json();
   }
 
   async fetchGameTeams(locationId) {
     const response = await this.makeRequest(`${API_BASE_URL}/api/game-teams/${locationId}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch game teams');
-    }
     return response.json();
   }
 }
