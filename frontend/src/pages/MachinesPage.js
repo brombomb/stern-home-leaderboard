@@ -43,37 +43,6 @@ function MachinesPage({
     setNewScoreNotification(null);
   };
 
-  const handleTestFireworks = () => {
-    // Trigger fireworks
-    triggerFireworks();
-
-    // Show test toast notification
-    setNewScoreNotification({
-      message: 'Test notification! New high score on Test Machine! TestPlayer scored 1,234,567!',
-      machineId: 'test',
-    });
-
-    // Simulate highlighting the first score in the first machine
-    if (machines.length > 0) {
-      const firstMachineId = machines[0].id;
-      const testScoreId = 'test-score-highlight';
-
-      // Add temporary highlighting
-      setNewScoreIds(prev => ({
-        ...prev,
-        [firstMachineId]: [testScoreId],
-      }));
-
-      // Clear highlighting after 10 seconds
-      setTimeout(() => {
-        setNewScoreIds(prev => ({
-          ...prev,
-          [firstMachineId]: [],
-        }));
-      }, 10000);
-    }
-  };
-
   useEffect(() => {
     // Only start auto-scrolling if we have machines and the content is loaded
     if (!loading && !error && machines.length > 0) {
@@ -219,14 +188,6 @@ function MachinesPage({
         message={newScoreNotification?.message}
         isVisible={!!newScoreNotification}
         onClose={handleCloseToast}
-      />
-
-      {/* Hidden confetti test button */}
-      <button
-        className="confetti-test-button"
-        onClick={handleTestFireworks}
-        title="Test Fireworks, Toast, and Score Highlighting"
-        aria-label="Test Fireworks, Toast, and Score Highlighting"
       />
 
       {isScrollPaused && (
