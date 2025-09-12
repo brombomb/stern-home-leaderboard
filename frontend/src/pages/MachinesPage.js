@@ -5,7 +5,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import MachineCard from '../components/MachineCard';
 import Toast from '../components/Toast';
 import { GRID_COLUMNS } from '../config';
-import { triggerFireworks, triggerCelebration } from '../utils/confetti';
+import { triggerCelebration } from '../utils/confetti';
 import './MachinesPage.css';
 
 function MachinesPage({
@@ -19,7 +19,6 @@ function MachinesPage({
   newScoreIds,
   newScoreNotification,
   setNewScoreNotification,
-  setNewScoreIds,
 }) {
 
   const pageRef = useRef(null);
