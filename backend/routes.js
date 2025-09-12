@@ -78,7 +78,6 @@ class SternApiClient {
   async refreshAuthAndUpdateRequest(req) {
     const refreshed = await SternAuth.refreshAuth();
     if (refreshed) {
-      console.log('Authentication refresh successful');
       req.authData = SternAuth.authData;
       req.cookies = SternAuth.cookies;
       return true;

@@ -21,7 +21,7 @@ A beautiful web application for displaying pinball machine high scores from your
 
 ## 🎯 Live Demo
 
-**[👀 Try the Interactive Demo](https://brombomb.github.io/stern-home-leaderboard/demo/)**
+**[👀 Try the Interactive Demo](https://brombomb.github.io/stern-home-leaderboard/)**
 
 Experience the leaderboard features with sample data including:
 - Game selection from Stern's catalog

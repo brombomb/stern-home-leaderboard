@@ -9,6 +9,8 @@ function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetc
   const variableWidthLogo = machine.model?.title?.variable_width_logo;
   const squareLogo = machine.model?.title?.square_logo;
   const gameName = machine.model?.title?.name || 'Game Logo';
+  const gradientStart = machine.model?.title?.gradient_start;
+  const gradientStop = machine.model?.title?.gradient_stop;
 
   const containerStyle = backgroundImage ? {
     backgroundImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url(${backgroundImage})`,
@@ -74,7 +76,9 @@ function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetc
 
         {/* High scores section */}
         <div className="fullscreen-scores">
-          <div className="scores-table-container">
+          <div className="scores-table-container"
+            style = { { borderImage: `linear-gradient(to bottom, ${gradientStart}, ${gradientStop}) 1` } }
+          >
             <HighScoresTable
               scores={highScores[machine.id]}
               isLoading={loadingScores[machine.id]}

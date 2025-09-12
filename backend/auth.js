@@ -123,12 +123,14 @@ class SternAuth {
   }
 
   static async refreshAuth() {
+    console.log('Attempting authentication refresh...');
     const username = process.env.STERN_USERNAME;
     const password = process.env.STERN_PASSWORD;
 
     const result = await this.login(username, password);
 
     if (result.success) {
+      console.log('Authentication refresh successful');
       return true;
     } else {
       console.error('Failed to refresh authentication:', result.error);
