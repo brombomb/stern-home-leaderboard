@@ -1,0 +1,466 @@
+/* Global Styles for Stern Pinball High Score Leaderboard */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #fff;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+}
+
+/* Links */
+a {
+    color: #e53935;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #111;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e53935;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d32f2f;
+}
+
+/* Selection */
+::selection {
+    background: #e53935;
+    color: #fff;
+}
+
+/* Focus outline */
+*:focus {
+    outline: 2px solid #e53935;
+    outline-offset: 2px;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.demo-controls {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.game-selector {
+    margin-bottom: 20px;
+}
+
+.game-selector label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.game-selector select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 16px;
+}
+
+.demo-button {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.demo-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.game-display {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
+}
+
+.machine-card {
+    background: #111;
+    padding: 2.5rem;
+    border-radius: 8px;
+    border: 3px solid transparent;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: fit-content;
+}
+
+.machine-card.with-background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: local;
+}
+
+.machine-card.with-background>* {
+    position: relative;
+    z-index: 2;
+}
+
+.machine-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.game-logo {
+    height: 60px;
+    width: auto;
+    margin-right: 1rem;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.game-logo.loading {
+    opacity: 0.5;
+}
+
+.game-logo.error {
+    display: none !important;
+}
+
+.game-logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(2px 2px 8px rgba(229, 57, 53, 0.6)) drop-shadow(0 0 10px rgba(229, 57, 53, 0.4));
+}
+
+.machine-info {
+    flex: 1;
+}
+
+.game-title {
+    color: #fff;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.8);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.game-description {
+    font-size: 0.9rem;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.7);
+    line-height: 1.6;
+}
+
+.high-scores-section {
+    margin-top: 1rem;
+}
+
+.last-played {
+    position: absolute;
+    bottom: 1rem;
+    right: 2.5rem;
+    font-size: 0.85rem;
+    color: #ccc;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    z-index: 3;
+}
+
+.high-scores-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    table-layout: fixed;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table-header {
+    background: rgba(229, 57, 53, 0.6);
+    color: #fff;
+}
+
+.table-header th {
+    padding: 0.5rem;
+    border: none;
+    text-align: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.table-header th:nth-child(1) {
+    width: 60px;
+}
+
+.table-header th:nth-child(2) {
+    width: 180px;
+}
+
+.table-header th:nth-child(3) {
+    width: auto;
+    text-align: right;
+}
+
+.table-row {
+    border-bottom: none;
+    background: rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.table-row:hover {
+    background: rgba(229, 57, 53, 0.15);
+}
+
+.table-row.new-score {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.3), rgba(255, 215, 0, 0.1)) !important;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+    animation: new-score-glow 2s ease-in-out infinite;
+}
+
+@keyframes new-score-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 16px rgba(255, 215, 0, 0.8);
+    }
+}
+
+.table-cell {
+    padding: 0.5rem;
+    color: #fff;
+    border: none;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    vertical-align: middle;
+}
+
+.rank-cell {
+    font-weight: bold;
+    color: #e53935;
+    text-align: center;
+    width: 60px;
+    font-size: 1.2rem;
+}
+
+.rank-cell:first-child {
+    color: #ffd700;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+}
+
+.player-name {
+    font-weight: bold;
+}
+
+.score-cell {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: right;
+}
+
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s ease-out;
+    backdrop-filter: blur(10px);
+}
+
+.toast.hidden {
+    display: none;
+}
+
+.toast-icon {
+    font-size: 1.5rem;
+}
+
+.toast-message {
+    font-weight: bold;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-display {
+        padding: 0 0.5rem;
+    }
+
+    .machine-card {
+        padding: 1rem;
+    }
+
+    .status-indicator {
+        top: 0.5rem;
+        right: 1rem;
+        padding: 2px 6px;
+        font-size: 0.9rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .table-cell {
+        padding: 0.4rem;
+    }
+
+    .status-indicator {
+        top: 0.5rem;
+        right: 1.5rem;
+    }
+
+    .last-played {
+        bottom: 0.5rem;
+        right: 1.5rem;
+        font-size: 0.8rem;
+    }
+}

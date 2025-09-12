@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stern Pinball Leaderboard Demo</title>
+        <meta name="description"
+            content="Interactive demo of Stern Pinball Home Leaderboard with confetti effects, toast notifications, and dynamic themes.">
+        <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>🎯 Stern Pinball Leaderboard Demo</h1>
+
+            <div class="demo-controls">
+                <div class="game-selector">
+                    <label for="gameSelect">Select a Pinball Game:</label>
+                    <select id="gameSelect">
+                    </select>
+                </div>
+                <button id="newHighScoreBtn" class="demo-button">🏆 Add New High Score</button>
+            </div>
+
+            <div class="game-display">
+                <div class="machine-card" id="machineCard">
+                    <div class="status-indicator">
+                        <span class="status-dot-online" title="Online"></span>
+                    </div>
+
+                    <div class="machine-header">
+                        <img id="gameLogo" class="game-logo" src="" alt="Game Logo" style="display: none;">
+                    </div>
+
+                    <div class="high-scores-section">
+                        <table class="high-scores-table">
+                            <thead>
+                                <tr class="table-header">
+                                    <th>Rank</th>
+                                    <th>Player</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scoresTableBody">
+                                <tr>
+                                    <td colspan="3" style="text-align: center; padding: 40px; opacity: 0.7;">
+                                        Select a game to view high scores
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toastContainer" class="toast-container">
+            <div id="toast" class="toast hidden">
+                <div class="toast-icon">🏆</div>
+                <div class="toast-message">New high score achieved!</div>
+                <button class="toast-close" onclick="hideToast()">×</button>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        <script src="script.js"></script>
+        <script src="script.js"></script>
+    </body>
+
+</html>

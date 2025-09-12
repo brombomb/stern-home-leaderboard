@@ -87,8 +87,8 @@
   margin: 0; /* Remove margin since we're using grid gap */
   padding: 2.5rem;
   border-radius: 8px;
-  box-shadow: 0 0 8px #900;
-  border: 1px solid #333;
+  border-width: 2px;
+  border-style: solid;
   position: relative;
   overflow: hidden;
   width: 100%; /* Ensure cards fill their grid cell */

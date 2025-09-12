@@ -8,10 +8,20 @@ function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighS
   const variableWidthLogo = machine.model?.title?.variable_width_logo;
   const squareLogo = machine.model?.title?.square_logo;
   const gameName = machine.model?.title?.name || 'Game Logo';
+  const gradientStart = machine.model?.title?.gradient_start;
+  const gradientStop = machine.model?.title?.gradient_stop;
 
-  const cardStyle = backgroundImage ? {
-    backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${backgroundImage})`,
-  } : {};
+  const cardStyle = {};
+
+  // Add background image
+  if (backgroundImage) {
+    cardStyle.backgroundImage = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${backgroundImage})`;
+  }
+
+  // Add gradient border and box shadow
+  if (gradientStart && gradientStop) {
+    cardStyle.borderImage = `linear-gradient(to bottom, ${gradientStart}, ${gradientStop}) 1`;
+  }
 
   useEffect(() => {
     // Only fetch if we don't already have scores for this machine

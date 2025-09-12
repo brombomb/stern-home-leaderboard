@@ -19,6 +19,15 @@ A beautiful web application for displaying pinball machine high scores from your
 - **⚡ Auto-refresh** - Configurable periodic refresh keeps scores current
 - **🔧 Easy Setup** - Simple Docker deployment with minimal configuration
 
+## 🎯 Live Demo
+
+**[👀 Try the Interactive Demo](https://brombomb.github.io/stern-home-leaderboard/demo/)**
+
+Experience the leaderboard features with sample data including:
+- Game selection from Stern's catalog
+- Dynamic themes and styling
+- Toast notifications
+
 <div align="center">
   <table>
     <tr>
