@@ -1,0 +1,19 @@
+/* New score highlighting */
+.table-row.new-score {
+  background: linear-gradient(90deg, rgba(255, 215, 0, 0.3), rgba(255, 215, 0, 0.1)) !important;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+  animation: new-score-glow 2s ease-in-out;
+}
+
+.table-row.new-score:hover {
+  background: linear-gradient(90deg, rgba(255, 215, 0, 0.4), rgba(255, 215, 0, 0.2)) !important;
+}
+
+@keyframes new-score-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.8);
+  }
+}

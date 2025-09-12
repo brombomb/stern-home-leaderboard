@@ -3,7 +3,7 @@ import HighScoresTable from '../HighScoresTable';
 import TechAlerts from '../TechAlerts';
 import { setQueryParams } from '../../utils/queryParams';
 
-function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighScores }) {
+function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighScores, newScoreIds = [] }) {
   const backgroundImage = machine.model?.title?.primary_background;
   const variableWidthLogo = machine.model?.title?.variable_width_logo;
   const squareLogo = machine.model?.title?.square_logo;
@@ -61,6 +61,7 @@ function MachineCard({ machine, highScores, loadingScores, avatars, onFetchHighS
           scores={highScores[machine.id]}
           isLoading={loadingScores[machine.id]}
           avatars={avatars}
+          newScoreIds={newScoreIds}
         />
       </div>
 

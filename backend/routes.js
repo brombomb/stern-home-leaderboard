@@ -15,158 +15,136 @@ const DEFAULT_LOCATION = JSON.stringify({
   continent: process.env.DEFAULT_CONTINENT || 'NA',
 });
 
-// Helper function to create standard headers
-const createHeaders = (req) => {
-  const headers = {
-    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0',
-    'Accept': 'application/json, text/plain, */*',
-    'Accept-Language': 'en-US,en;q=0.5',
-    'Referer': 'https://insider.sternpinball.com/',
-    'Content-Type': 'application/json',
-    'Cache-Control': 'max-age=604800, no-cache, no-store',
-    'Origin': 'https://insider.sternpinball.com',
-    'DNT': '1',
-    'Sec-GPC': '1',
-    'Connection': 'keep-alive',
-    'Sec-Fetch-Dest': 'empty',
-    'Sec-Fetch-Mode': 'cors',
-    'Sec-Fetch-Site': 'cross-site',
-    'Pragma': 'no-cache',
-    'Location': DEFAULT_LOCATION,
-  };
+// Constants
+const MAX_RETRIES = 2;
 
-  if (req.cookies) {
-    headers['Cookie'] = req.cookies;
+// Enhanced error class for API errors
+class ApiError extends Error {
+  constructor(message, status, body) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.body = body;
+  }
+}
+
+// Unified API client with retry logic
+class SternApiClient {
+  constructor() {
+    this.defaultHeaders = {
+      'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0',
+      'Accept': 'application/json, text/plain, */*',
+      'Accept-Language': 'en-US,en;q=0.5',
+      'Referer': 'https://insider.sternpinball.com/',
+      'Content-Type': 'application/json',
+      'Cache-Control': 'max-age=604800, no-cache, no-store',
+      'Origin': 'https://insider.sternpinball.com',
+      'DNT': '1',
+      'Sec-GPC': '1',
+      'Connection': 'keep-alive',
+      'Sec-Fetch-Dest': 'empty',
+      'Sec-Fetch-Mode': 'cors',
+      'Sec-Fetch-Site': 'cross-site',
+      'Pragma': 'no-cache',
+      'Location': DEFAULT_LOCATION,
+    };
   }
 
-  if (req.authData?.token) {
-    headers['Authorization'] = `Bearer ${req.authData.token}`;
-  }
+  createHeaders(req) {
+    const headers = { ...this.defaultHeaders };
 
-  return headers;
-};
-
-// Helper function for making fetch calls with automatic retry on 401/403
-const fetchWithRetry = async (url, headers, req, errorMessage, retryCount = 0) => {
-  const MAX_RETRIES = 2;
-
-  const response = await fetch(url, { headers });
-
-  // Log response details for debugging
-  console.log(`API Call to ${url}: Status ${response.status} ${response.statusText}`);
-
-  // Handle 401 Unauthorized or 403 Forbidden - likely authentication issue
-  if ((response.status === 401 || response.status === 403) && retryCount < MAX_RETRIES) {
-    console.log(`Received ${response.status} error, attempting to refresh authentication (retry ${retryCount + 1}/${MAX_RETRIES})`);
-
-    // Log the response body for debugging
-    try {
-      const errorBody = await response.clone().text();
-      console.error(`Stern API ${response.status} response:`, errorBody);
-    } catch (logError) {
-      console.error('Could not read error response body:', logError.message);
+    if (req.cookies) {
+      headers['Cookie'] = req.cookies;
     }
 
-    // Attempt to refresh authentication
+    if (req.authData?.token) {
+      headers['Authorization'] = `Bearer ${req.authData.token}`;
+    }
+
+    return headers;
+  }
+
+  async logResponseError(response, context) {
+    try {
+      const errorBody = await response.clone().text();
+      console.error(`${context} - Status ${response.status}:`, errorBody);
+      return errorBody;
+    } catch (logError) {
+      console.error('Could not read error response body:', logError.message);
+      return `Status ${response.status}`;
+    }
+  }
+
+  async refreshAuthAndUpdateRequest(req) {
     const refreshed = await SternAuth.refreshAuth();
     if (refreshed) {
-      console.log('Authentication refresh successful, retrying API call');
-      // Update request with new auth data
+      console.log('Authentication refresh successful');
       req.authData = SternAuth.authData;
       req.cookies = SternAuth.cookies;
-
-      // Update headers with new auth data
-      const newHeaders = createHeaders(req);
-
-      // Retry the API call
-      return fetchWithRetry(url, newHeaders, req, errorMessage, retryCount + 1);
-    } else {
-      console.error(`Failed to refresh authentication after ${response.status} response`);
-      throw new Error('Authentication expired and refresh failed');
+      return true;
     }
+    console.error('Failed to refresh authentication');
+    return false;
   }
 
-  if (!response.ok) {
-    // Log the response body for non-auth errors as well
-    try {
-      const errorBody = await response.clone().text();
-      console.error(`Stern API ${response.status} response:`, errorBody);
-      throw new Error(`${errorMessage}: ${response.status} - ${errorBody}`);
-    } catch (logError) {
-      console.error('Could not read error response body:', logError.message);
-      throw new Error(`${errorMessage}: ${response.status}`);
-    }
-  }
-
-  return response;
-};
-
-// Helper function for making API calls with automatic retry on 401/403
-const makeApiCall = async (url, req, res, errorMessage, retryCount = 0) => {
-  const MAX_RETRIES = 2;
-
-  try {
-    const headers = createHeaders(req);
+  async makeRequest(url, req, retryCount = 0) {
+    const headers = this.createHeaders(req);
     const response = await fetch(url, { headers });
 
-    // Log response details for debugging
-    console.log(`API Call to ${url}: Status ${response.status} ${response.statusText}`);
-
-    // Handle 401 Unauthorized or 403 Forbidden - likely authentication issue
+    // Handle authentication errors with retry
     if ((response.status === 401 || response.status === 403) && retryCount < MAX_RETRIES) {
       console.log(`Received ${response.status} error, attempting to refresh authentication (retry ${retryCount + 1}/${MAX_RETRIES})`);
 
-      // Log the response body for debugging
-      try {
-        const errorBody = await response.clone().text();
-        console.error(`Stern API ${response.status} response:`, errorBody);
-      } catch (logError) {
-        console.error('Could not read error response body:', logError.message);
+      await this.logResponseError(response, 'Auth error');
+
+      const authRefreshed = await this.refreshAuthAndUpdateRequest(req);
+      if (authRefreshed) {
+        return this.makeRequest(url, req, retryCount + 1);
       }
 
-      // Attempt to refresh authentication
-      const refreshed = await SternAuth.refreshAuth();
-      if (refreshed) {
-        console.log('Authentication refresh successful, retrying API call');
-        // Update request with new auth data
-        req.authData = SternAuth.authData;
-        req.cookies = SternAuth.cookies;
+      throw new ApiError('Authentication expired and refresh failed', 401);
+    }
 
-        // Retry the API call
-        return makeApiCall(url, req, res, errorMessage, retryCount + 1);
-      } else {
-        console.error(`Failed to refresh authentication after ${response.status} response`);
-        return res.status(401).json({
-          error: 'Authentication expired and refresh failed',
-          details: 'Please check your credentials',
+    // Handle other errors
+    if (!response.ok) {
+      const errorBody = await this.logResponseError(response, 'API Error');
+      throw new ApiError('API call failed', response.status, errorBody);
+    }
+
+    return response;
+  }
+
+  async fetchJson(url, req) {
+    const response = await this.makeRequest(url, req);
+    return response.json();
+  }
+
+  async handleApiRoute(url, req, res, errorMessage) {
+    try {
+      const data = await this.fetchJson(url, req);
+      return res.json(data);
+    } catch (error) {
+      console.error(`${errorMessage}:`, error.message);
+
+      if (error instanceof ApiError) {
+        const statusCode = error.status === 401 ? 401 : 500;
+        return res.status(statusCode).json({
+          error: errorMessage,
+          details: error.message,
+          ...(error.status === 401 && { details: 'Please check your credentials' }),
         });
       }
+
+      return res.status(500).json({
+        error: errorMessage,
+        details: error.message,
+      });
     }
-
-    if (!response.ok) {
-      // Log the response body for non-auth errors as well
-      try {
-        const errorBody = await response.clone().text();
-        console.error(`Stern API ${response.status} response:`, errorBody);
-        throw new Error(`API call failed with status ${response.status}: ${errorBody}`);
-      } catch (logError) {
-        console.error('Could not read error response body:', logError.message);
-        throw new Error(`API call failed with status ${response.status}`);
-      }
-    }
-
-    const data = await response.json();
-    return res.json(data);
-  } catch (err) {
-    console.error(`${errorMessage}:`, err.message);
-
-    return res.status(500).json({
-      error: errorMessage,
-      details: err.message,
-      retryAttempts: retryCount,
-    });
   }
-};
+}
+
+// Create a single instance of the API client
+const apiClient = new SternApiClient();
 
 // Re-authentication endpoint
 router.post('/reauth', async (req, res) => {
@@ -192,11 +170,7 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
   try {
     // First, fetch the basic machines list
     const machinesUrl = `${API_BASE_URL}/user_registered_machines/?group_type=home`;
-    const headers = createHeaders(req);
-
-    // Use makeApiCall for consistent retry logic and error handling
-    const machinesResponse = await fetchWithRetry(machinesUrl, headers, req, 'Failed to fetch machines list');
-    const machinesData = await machinesResponse.json();
+    const machinesData = await apiClient.fetchJson(machinesUrl, req);
     const basicMachines = machinesData.user?.machines || [];
 
     // Now fetch detailed information for each machine to get tech alerts
@@ -204,21 +178,15 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
       basicMachines.map(async (machine) => {
         try {
           const detailsUrl = `${API_BASE_URL}/game_machines/${machine.id}`;
-          const detailsResponse = await fetchWithRetry(detailsUrl, headers, req, 'Failed to fetch machine details');
+          const detailsData = await apiClient.fetchJson(detailsUrl, req);
 
-          if (detailsResponse.ok) {
-            const detailsData = await detailsResponse.json();
-            // Merge basic machine data with detailed data, prioritizing detailed data
-            return {
-              ...machine,
-              ...detailsData,
-              // Preserve any fields from basic data that might not be in details
-              model: machine.model || detailsData.model,
-            };
-          } else {
-            // Return basic machine data if details fetch fails
-            return machine;
-          }
+          // Merge basic machine data with detailed data, prioritizing detailed data
+          return {
+            ...machine,
+            ...detailsData,
+            // Preserve any fields from basic data that might not be in details
+            model: machine.model || detailsData.model,
+          };
         } catch (err) {
           console.error(`Failed to fetch details for machine ${machine.id}:`, err.message);
           // Return basic machine data if details fetch fails
@@ -227,7 +195,7 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
       }),
     );
 
-    // Extract successful results and failed ones
+    // Extract successful results
     const successfulMachines = detailedMachines
       .filter(result => result.status === 'fulfilled')
       .map(result => result.value);
@@ -243,6 +211,14 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
 
   } catch (err) {
     console.error('Failed to fetch machines:', err.message);
+
+    if (err instanceof ApiError && err.status === 401) {
+      return res.status(401).json({
+        error: 'Authentication expired and refresh failed',
+        details: 'Please check your credentials',
+      });
+    }
+
     res.status(500).json({
       error: 'Failed to fetch machines',
       details: err.message,
@@ -253,19 +229,19 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
 // High scores endpoint - protected by auth middleware
 router.get('/high-scores/:machineId', SternAuth.requireAuth, async (req, res) => {
   const url = `${API_BASE_URL}/game_machine_high_scores/?machine_id=${req.params.machineId}`;
-  await makeApiCall(url, req, res, 'Failed to fetch high scores');
+  await apiClient.handleApiRoute(url, req, res, 'Failed to fetch high scores');
 });
 
 // Game teams endpoint to get avatars - protected by auth middleware
 router.get('/game-teams/:locationId', SternAuth.requireAuth, async (req, res) => {
   const url = `${GAME_TEAMS_API_URL}/game_teams/?location_id=${req.params.locationId}`;
-  await makeApiCall(url, req, res, 'Failed to fetch game teams');
+  await apiClient.handleApiRoute(url, req, res, 'Failed to fetch game teams');
 });
 
 // Machine details endpoint - protected by auth middleware
 router.get('/machine-details/:machineId', SternAuth.requireAuth, async (req, res) => {
   const url = `${API_BASE_URL}/game_machines/${req.params.machineId}`;
-  await makeApiCall(url, req, res, 'Failed to fetch machine details');
+  await apiClient.handleApiRoute(url, req, res, 'Failed to fetch machine details');
 });
 
 module.exports = router;

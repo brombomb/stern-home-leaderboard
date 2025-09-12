@@ -16,6 +16,10 @@ function App() {
     loadingScores,
     error,
     fetchHighScores,
+    newScoreIds,
+    newScoreNotification,
+    setNewScoreNotification,
+    setNewScoreIds,
   } = useMachinesData();
 
   // Listen for URL changes
@@ -73,6 +77,7 @@ function App() {
         loadingScores={loadingScores}
         avatars={avatars}
         onFetchHighScores={fetchHighScores}
+        newScoreIds={newScoreIds[machine.id] || []}
       />
     );
   }
@@ -88,6 +93,10 @@ function App() {
         loadingScores={loadingScores}
         error={error}
         fetchHighScores={fetchHighScores}
+        newScoreIds={newScoreIds}
+        newScoreNotification={newScoreNotification}
+        setNewScoreNotification={setNewScoreNotification}
+        setNewScoreIds={setNewScoreIds}
       />
     </div>
   );

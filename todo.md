@@ -1,7 +1,17 @@
-- Hide Archived
-- Tech Alerts
-    -- `last_seven_day_tech_alerts`
-    -- message	"No Alerts"
+- ✅ Hide Archived - COMPLETED
+    -- ✅ Filter archived machines from display
+    -- ✅ Based on machine.archived property from API
+- ✅ Tech Alerts - COMPLETED
+    -- ✅ Yellow alert icon with badge count
+    -- ✅ Shows only when real alerts exist (filters out "No Alerts")
+    -- ✅ Click to open popup with alert details
+    -- ✅ Formatted local time display
+    -- ✅ Keyboard navigation support (Enter/Space to open, Escape to close)
+    -- ✅ Accessibility features (ARIA labels, focus management)
+    -- ✅ Responsive design with dark theme support
+    -- ✅ Enhanced backend API to fetch detailed machine data
+    -- ✅ Backend calls game_machines/{id} for each machine to get tech alerts
+    -- ✅ Graceful fallback if detailed data fetch fails
 - ✅ Custom CSS - COMPLETED
     -- ✅ Environment variable support (CUSTOM_CSS_PATH)
     -- ✅ Volume mount capability for CSS files
@@ -17,3 +27,16 @@
     -- ✅ Mobile-first responsive breakpoints
     -- ✅ Documentation and examples
     -- ✅ Supports 1-4+ columns with automatic reduction on smaller screens
+
+- ✅ Highlight new scores after a refresh - COMPLETED
+    -- ✅ Add a table cell background and a trophy icon next to their name
+- ✅ Add a notification / toast to the page when a new score has hit the leaderboard - COMPLETED
+    -- ✅ Add a cool confetti effect across the page as it pops using canvas-confetti library
+    -- ✅ Use fireworks confetti code for the effect
+    -- ✅ Add a hidden button in the bottom left to test the fireworks (100px square, sticky bottom left)
+- Cache Stern API Responses in case it goes offline
+- Make a demo site
+    -- Use https://cms.prd.sternpinball.io/api/v1/portal/game_titles/ to fetch all Stern Pinball Titles (public API, no auth)
+    -- render a single High score table
+    -- Render a List using the above API, on change update the images and styles for the high score table
+    -- Add a New High Score button, when clicked highlights the first score row, and adds the confetti affect and the toast notification

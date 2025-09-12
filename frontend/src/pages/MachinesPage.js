@@ -3,7 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 import MachineCard from '../components/MachineCard';
+import Toast from '../components/Toast';
 import { GRID_COLUMNS } from '../config';
+import { triggerFireworks, triggerCelebration } from '../utils/confetti';
 import './MachinesPage.css';
 
 function MachinesPage({
@@ -14,6 +16,10 @@ function MachinesPage({
   loadingScores,
   error,
   fetchHighScores,
+  newScoreIds,
+  newScoreNotification,
+  setNewScoreNotification,
+  setNewScoreIds,
 }) {
 
   const pageRef = useRef(null);
@@ -25,6 +31,48 @@ function MachinesPage({
   const isPausedAtEndRef = useRef(false);
   const [isScrollPaused, setIsScrollPaused] = useState(false);
   const [resumeCountdown, setResumeCountdown] = useState(0);
+
+  // Handle new score notifications and confetti
+  useEffect(() => {
+    if (newScoreNotification) {
+      triggerCelebration();
+    }
+  }, [newScoreNotification]);
+
+  const handleCloseToast = () => {
+    setNewScoreNotification(null);
+  };
+
+  const handleTestFireworks = () => {
+    // Trigger fireworks
+    triggerFireworks();
+
+    // Show test toast notification
+    setNewScoreNotification({
+      message: 'Test notification! New high score on Test Machine! TestPlayer scored 1,234,567!',
+      machineId: 'test',
+    });
+
+    // Simulate highlighting the first score in the first machine
+    if (machines.length > 0) {
+      const firstMachineId = machines[0].id;
+      const testScoreId = 'test-score-highlight';
+
+      // Add temporary highlighting
+      setNewScoreIds(prev => ({
+        ...prev,
+        [firstMachineId]: [testScoreId],
+      }));
+
+      // Clear highlighting after 10 seconds
+      setTimeout(() => {
+        setNewScoreIds(prev => ({
+          ...prev,
+          [firstMachineId]: [],
+        }));
+      }, 10000);
+    }
+  };
 
   useEffect(() => {
     // Only start auto-scrolling if we have machines and the content is loaded
@@ -166,6 +214,21 @@ function MachinesPage({
 
   return (
     <div className="machines-page" ref={pageRef}>
+      {/* Toast notification for new scores */}
+      <Toast
+        message={newScoreNotification?.message}
+        isVisible={!!newScoreNotification}
+        onClose={handleCloseToast}
+      />
+
+      {/* Hidden confetti test button */}
+      <button
+        className="confetti-test-button"
+        onClick={handleTestFireworks}
+        title="Test Fireworks, Toast, and Score Highlighting"
+        aria-label="Test Fireworks, Toast, and Score Highlighting"
+      />
+
       {isScrollPaused && (
         <div className="scroll-pause-indicator visible">
           Auto-scroll paused{resumeCountdown > 0 ? ` - resuming in ${resumeCountdown}s` : ' - will resume in a few seconds'}
@@ -188,6 +251,7 @@ function MachinesPage({
               loadingScores={loadingScores}
               avatars={avatars}
               onFetchHighScores={fetchHighScores}
+              newScoreIds={newScoreIds[machine.id] || []}
             />
           ))}
         </div>

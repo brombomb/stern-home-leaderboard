@@ -318,6 +318,38 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.trophy-icon {
+  font-size: 1rem;
+  animation: trophy-bounce 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.8));
+}
+
+@keyframes trophy-bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Hidden confetti test button */
+.confetti-test-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 100px;
+  height: 100px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 1000;
 }
 
 .score-cell {

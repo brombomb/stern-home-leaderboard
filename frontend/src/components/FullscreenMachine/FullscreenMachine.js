@@ -4,7 +4,7 @@ import TechAlerts from '../TechAlerts';
 import { clearQueryParams } from '../../utils/queryParams';
 import './FullscreenMachine.css';
 
-function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetchHighScores }) {
+function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetchHighScores, newScoreIds = [] }) {
   const backgroundImage = machine.model?.title?.primary_background;
   const variableWidthLogo = machine.model?.title?.variable_width_logo;
   const squareLogo = machine.model?.title?.square_logo;
@@ -79,6 +79,7 @@ function FullscreenMachine({ machine, highScores, loadingScores, avatars, onFetc
               scores={highScores[machine.id]}
               isLoading={loadingScores[machine.id]}
               avatars={avatars}
+              newScoreIds={newScoreIds}
             />
           </div>
         </div>

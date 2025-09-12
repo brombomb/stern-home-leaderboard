@@ -1,7 +1,8 @@
 
 import PlayerInfo from '../PlayerInfo';
+import './HighScoresTable.css';
 
-function HighScoresTable({ scores, isLoading, avatars }) {
+function HighScoresTable({ scores, isLoading, avatars, newScoreIds = [] }) {
   if (isLoading) {
     return <div className="loading-scores">Loading high scores...</div>;
   }
@@ -34,14 +35,21 @@ function HighScoresTable({ scores, isLoading, avatars }) {
                           scoreEntry.user?.initials ||
                           'Unknown';
           const avatarData = avatars[username.toLowerCase()];
+          const scoreId = scoreEntry.id || `${username}-${scoreEntry.score}`;
+          const isNewScore = newScoreIds.includes(scoreId) ||
+                           (index === 0 && newScoreIds.includes('test-score-highlight'));
 
           return (
-            <tr key={index} className="table-row">
+            <tr key={index} className={`table-row ${isNewScore ? 'new-score' : ''}`}>
               <td className="table-cell rank-cell">
                 {index === 0 ? 'GC' : index}
               </td>
               <td className="table-cell">
-                <PlayerInfo username={username} avatarData={avatarData} />
+                <PlayerInfo
+                  username={username}
+                  avatarData={avatarData}
+                  isNewScore={isNewScore}
+                />
               </td>
               <td className="table-cell score-cell">
                 {parseInt(scoreEntry.score)?.toLocaleString() || 'N/A'}

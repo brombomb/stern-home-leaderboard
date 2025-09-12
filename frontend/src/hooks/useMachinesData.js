@@ -10,7 +10,10 @@ export function useMachinesData() {
   const [loadingScores, setLoadingScores] = useState({});
   const [error, setError] = useState('');
   const [lastRefresh, setLastRefresh] = useState(null);
+  const [newScoreIds, setNewScoreIds] = useState({});
+  const [newScoreNotification, setNewScoreNotification] = useState(null);
   const refreshIntervalRef = useRef(null);
+  const previousScoresRef = useRef({});
 
   const fetchHighScores = useCallback(async (machineId) => {
     // Prevent duplicate calls
@@ -21,6 +24,44 @@ export function useMachinesData() {
     setLoadingScores(prev => ({ ...prev, [machineId]: true }));
     try {
       const data = await apiService.fetchHighScores(machineId);
+
+      // Check for new scores
+      const previousScores = previousScoresRef.current[machineId];
+      if (previousScores && data.high_score) {
+        const newScores = data.high_score.filter(score => {
+          const scoreId = score.id || `${score.user?.username || 'Unknown'}-${score.score}`;
+          return !previousScores.find(prevScore => {
+            const prevScoreId = prevScore.id || `${prevScore.user?.username || 'Unknown'}-${prevScore.score}`;
+            return prevScoreId === scoreId;
+          });
+        });
+
+        if (newScores.length > 0) {
+          const newIds = newScores.map(score =>
+            score.id || `${score.user?.username || 'Unknown'}-${score.score}`,
+          );
+          setNewScoreIds(prev => ({ ...prev, [machineId]: newIds }));
+
+          // Show notification for the highest new score
+          const highestNewScore = newScores[0];
+          const machineName = machines.find(m => m.id === machineId)?.model?.title?.name || 'Unknown Machine';
+          setNewScoreNotification({
+            message: `New high score on ${machineName}! ${highestNewScore.user?.username || 'Unknown'} scored ${parseInt(highestNewScore.score)?.toLocaleString()}!`,
+            machineId,
+          });
+
+          // Clear new score highlighting after 10 seconds
+          setTimeout(() => {
+            setNewScoreIds(prev => ({ ...prev, [machineId]: [] }));
+          }, 10000);
+        }
+      }
+
+      // Store current scores for next comparison
+      if (data.high_score) {
+        previousScoresRef.current[machineId] = [...data.high_score];
+      }
+
       setHighScores(prev => ({ ...prev, [machineId]: data }));
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -29,7 +70,7 @@ export function useMachinesData() {
     } finally {
       setLoadingScores(prev => ({ ...prev, [machineId]: false }));
     }
-  }, [loadingScores, highScores]);
+  }, [loadingScores, highScores, machines]);
 
   const fetchAvatars = useCallback(async (locationId) => {
     try {
@@ -79,6 +120,7 @@ export function useMachinesData() {
   const refreshData = useCallback(async () => {
     // Clear high scores and reload machines
     setHighScores({});
+    previousScoresRef.current = {};
     await loadMachines();
   }, [loadMachines]);
 
@@ -111,5 +153,9 @@ export function useMachinesData() {
     fetchHighScores,
     refreshData,
     lastRefresh,
+    newScoreIds,
+    newScoreNotification,
+    setNewScoreNotification,
+    setNewScoreIds,
   };
 }

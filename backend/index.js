@@ -8,7 +8,10 @@ const SternAuth = require('./auth');
 const app = express();
 
 // Middleware
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({
+  origin: true, // Allow all origins in development
+  credentials: true,
+}));
 app.use(express.json());
 app.use(session({
   secret: 'stern-leaderboard-secret',
@@ -21,6 +24,7 @@ app.use(session({
 app.use('/api', apiRoutes);
 
 const PORT = process.env.PORT || 5000;
+let server;
 
 // Initialize authentication and start server
 async function startServer() {
@@ -28,18 +32,46 @@ async function startServer() {
     // Try to initialize authentication on startup
     await SternAuth.initializeAuth();
 
-    app.listen(PORT, () => {
+    server = app.listen(PORT, () => {
       console.log(`Backend listening on port ${PORT}`);
       console.log('Server started successfully');
     });
   } catch (error) {
     console.error('Error during startup:', error);
     // Start server anyway - authentication will be retried on API calls
-    app.listen(PORT, () => {
+    server = app.listen(PORT, () => {
       console.log(`Backend listening on port ${PORT}`);
       console.log('Server started with authentication issues - will retry on API calls');
     });
   }
 }
+
+// Graceful shutdown handling
+function gracefulShutdown(signal) {
+  console.log(`\nReceived ${signal}. Shutting down gracefully...`);
+
+  if (server) {
+    server.close(() => {
+      console.log('Server closed');
+      // eslint-disable-next-line no-process-exit
+      process.exit(0);
+    });
+
+    // Force close after 10 seconds
+    setTimeout(() => {
+      console.log('Force closing server');
+      // eslint-disable-next-line no-process-exit
+      process.exit(1);
+    }, 10000);
+  } else {
+    // eslint-disable-next-line no-process-exit
+    process.exit(0);
+  }
+}
+
+// Listen for termination signals
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGUSR2', () => gracefulShutdown('SIGUSR2')); // nodemon restart
 
 startServer();
