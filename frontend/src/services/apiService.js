@@ -1,4 +1,3 @@
-import { API_BASE_URL } from '../config';
 
 class ApiService {
   async makeRequest(url, options = {}, retryCount = 0) {
@@ -20,7 +19,7 @@ class ApiService {
           // Ignore error reading response body
         }
 
-        const reAuthResponse = await fetch(`${API_BASE_URL}/api/reauth`, {
+        const reAuthResponse = await fetch('/api/reauth', {
           method: 'POST',
           credentials: 'include',
         });
@@ -56,18 +55,18 @@ class ApiService {
   }
 
   async fetchMachines() {
-    const response = await this.makeRequest(`${API_BASE_URL}/api/machines`);
+    const response = await this.makeRequest('/api/machines');
     const data = await response.json();
     return data.user?.machines || [];
   }
 
   async fetchHighScores(machineId) {
-    const response = await this.makeRequest(`${API_BASE_URL}/api/high-scores/${machineId}`);
+    const response = await this.makeRequest(`/api/high-scores/${machineId}`);
     return response.json();
   }
 
   async fetchGameTeams(locationId) {
-    const response = await this.makeRequest(`${API_BASE_URL}/api/game-teams/${locationId}`);
+    const response = await this.makeRequest(`/api/game-teams/${locationId}`);
     return response.json();
   }
 }

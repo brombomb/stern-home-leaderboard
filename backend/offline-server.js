@@ -21,7 +21,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5100;
 
 app.listen(PORT, () => {
   console.log(`🔌 Offline backend server listening on port ${PORT}`);
