@@ -40,7 +40,7 @@
 
 4. **Access the application**
    - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
+   - Backend API: http://localhost:5100
    - Fullscreen mode: http://localhost:3000?machine=MACHINE_ID&fullscreen=true
 
 ## Environment Variables

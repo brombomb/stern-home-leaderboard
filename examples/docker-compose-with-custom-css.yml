@@ -19,8 +19,8 @@ services:
       - backend
   backend:
     build: ./backend
-    ports:
-      - "5000:5000"
+    expose:
+      - "5100"
     environment:
       - STERN_USERNAME=${STERN_USERNAME}
       - STERN_PASSWORD=${STERN_PASSWORD}
