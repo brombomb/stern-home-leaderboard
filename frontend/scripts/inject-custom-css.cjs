@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
+ 
 
 const fs = require('fs');
 const path = require('path');
 
 // Environment variable for custom CSS file path
 const customCssPath = process.env.CUSTOM_CSS_PATH;
-const indexHtmlPath = path.join(__dirname, '../public/index.html');
+const indexHtmlPath = path.join(__dirname, '..', 'index.html');
 
 function injectCustomCss() {
   try {
