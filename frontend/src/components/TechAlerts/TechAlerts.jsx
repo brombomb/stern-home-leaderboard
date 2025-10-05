@@ -64,7 +64,7 @@ function TechAlerts({ techAlerts }) {
         second: '2-digit',
         timeZoneName: 'short',
       });
-    } catch {
+    } catch (_error) {
       return dateString; // Fallback to original string if parsing fails
     }
   };

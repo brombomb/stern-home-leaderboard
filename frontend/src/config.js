@@ -27,6 +27,6 @@ export async function loadRuntimeConfig() {
 }
 
 export function getConfig() {
-  if (!config) throw new Error('Config not loaded yet');
+  if (!config) throw new Error('Config not loaded yet. Call loadRuntimeConfig() before using getConfig().');
   return config;
 }
