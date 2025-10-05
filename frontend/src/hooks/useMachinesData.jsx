@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import apiService from '../services/apiService';
-import { DATA_REFRESH_INTERVAL_MINUTES } from '../config';
+import { getConfig } from '../config';
 
 export function useMachinesData() {
   const [machines, setMachines] = useState([]);
@@ -64,7 +64,6 @@ export function useMachinesData() {
 
       setHighScores(prev => ({ ...prev, [machineId]: data }));
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error(`Error fetching high scores for machine ${machineId}:`, err.message);
       setHighScores(prev => ({ ...prev, [machineId]: { error: err.message } }));
     } finally {
@@ -90,7 +89,6 @@ export function useMachinesData() {
 
       setAvatars(avatarMap);
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error(`Error fetching avatars for location ${locationId}:`, err.message);
       setAvatars({});
     }
@@ -129,7 +127,7 @@ export function useMachinesData() {
     loadMachines();
 
     // Set up periodic refresh
-    const refreshIntervalMs = DATA_REFRESH_INTERVAL_MINUTES * 60 * 1000;
+    const refreshIntervalMs = getConfig().DATA_REFRESH_INTERVAL_MINUTES * 60 * 1000;
     refreshIntervalRef.current = setInterval(() => {
       refreshData();
     }, refreshIntervalMs);

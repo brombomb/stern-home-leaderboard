@@ -5,14 +5,14 @@ services:
     ports:
       - "3000:80"
     environment:
-      - VITE_DATA_REFRESH_INTERVAL_MINUTES=${VITE_DATA_REFRESH_INTERVAL_MINUTES}
-      - VITE_GRID_COLUMNS=${VITE_GRID_COLUMNS}
-      - CUSTOM_CSS_PATH=${CUSTOM_CSS_PATH}
+      - DATA_REFRESH_INTERVAL_MINUTES=${DATA_REFRESH_INTERVAL_MINUTES:-60}
+      - GRID_COLUMNS=${GRID_COLUMNS:-1}
     volumes:
-      # Mount data directory for custom assets (CSS, images, fonts, etc.)
-      - ./data:/usr/share/nginx/html/data:ro
-      # Alternative: Mount from a custom location
-      # - /path/to/your/custom/assets:/app/data:ro
+      # Optional: Mount your custom assets into the /app/data directory.
+      # They will be linked to the web server static directory if present.
+      # `custom.css` specifically will be injected if present.
+      # Update the path on the left to your custom location
+      - ./frontend/public/app/data:/app/data:ro
     depends_on:
       - backend
   backend:
