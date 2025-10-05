@@ -63,9 +63,9 @@ function TechAlerts({ techAlerts }) {
         minute: '2-digit',
         second: '2-digit',
         timeZoneName: 'short',
-      });
-    } catch (_error) {
-      return dateString; // Fallback to original string if parsing fails
+      });                 // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      return dateString;  // Fallback to original string if parsing fails
     }
   };
 
