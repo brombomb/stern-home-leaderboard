@@ -3,6 +3,15 @@ const js = require('@eslint/js');
 module.exports = [
   js.configs.recommended,
   {
+    ignores: [
+      'node_modules/',
+      'offline/',
+      '*.log',
+      '.env',
+      '.env.*',
+    ],
+  },
+  {
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'commonjs',

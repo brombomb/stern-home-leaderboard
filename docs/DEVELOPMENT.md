@@ -25,7 +25,7 @@
 ```bash
 cd frontend
 npm install
-npm start
+npm dev 
 ```
 
 ### Backend
@@ -41,7 +41,7 @@ This project uses ESLint to ensure consistent code quality and style across both
 
 ### ESLint Configuration
 
-- **Frontend**: Uses ESLint 8 with React-specific rules and Create React App configuration
+- **Frontend**: Uses ESLint 9 with React-specific rules and Vite configuration
 - **Backend**: Uses ESLint 9 with Node.js-specific rules and flat config format
 - **Root**: Provides workspace-wide linting commands
 
@@ -66,14 +66,15 @@ cd backend && npm run lint:fix
 ## Project Structure
 ```
 stern-home-leaderboard/
-├── frontend/                 # React frontend
+├── frontend/               # React frontend
 │   ├── src/
-│   │   ├── components/      # Reusable UI components
-│   │   ├── hooks/           # Custom React hooks
-│   │   ├── pages/           # Page components
-│   │   └── services/        # API service layer
+│   │   ├── components/     # Reusable UI components
+│   │   ├── hooks/          # Custom React hooks
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API service layer
+│   │   └── utils/          # Frontend utility classes
 │   └── public/
-├── backend/                 # Node.js backend
+├── backend/                # Node.js backend
 │   ├── auth.js             # Authentication logic
 │   ├── routes.js           # API routes
 │   ├── index.js            # Main server

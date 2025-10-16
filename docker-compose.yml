@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   frontend:
     container_name: frontend
@@ -6,25 +5,25 @@ services:
     ports:
       - "3000:80"
     environment:
-      - REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=${REACT_APP_DATA_REFRESH_INTERVAL_MINUTES:-60}
-      - REACT_APP_GRID_COLUMNS=${REACT_APP_GRID_COLUMNS:-1}
-      - CUSTOM_CSS_PATH=${CUSTOM_CSS_PATH:-/app/data/custom.css}
+      - DATA_REFRESH_INTERVAL_MINUTES=${DATA_REFRESH_INTERVAL_MINUTES:-60}
+      - GRID_COLUMNS=${GRID_COLUMNS:-1}
     volumes:
-      # Mount data directory for custom assets (CSS, images, fonts, etc.)
-      - ./data:/usr/share/nginx/html/data:ro
-      # Alternative: Mount from a custom location
-      # - /path/to/your/custom/assets:/app/data:ro
+      # Optional: Mount your custom assets into the /app/data directory.
+      # They will be linked to the web server static directory if present.
+      # `custom.css` specifically will be injected if present.
+      # Update the path on the left to your custom location
+      - ./frontend/public/app/data:/app/data:ro
     depends_on:
       - backend
   backend:
     container_name: backend
     build: ./backend
-    ports:
-      - "5000:5000"
+    expose:
+      - "5100"
     environment:
       - STERN_USERNAME=${STERN_USERNAME}
       - STERN_PASSWORD=${STERN_PASSWORD}
-      - DEFAULT_COUNTRY=${DEFAULT_COUNTRY:-US}
-      - DEFAULT_STATE=${DEFAULT_STATE:-CO}
-      - DEFAULT_STATE_NAME=${DEFAULT_STATE_NAME:-Colorado}
-      - DEFAULT_CONTINENT=${DEFAULT_CONTINENT:-NA}
+      - DEFAULT_COUNTRY=${DEFAULT_COUNTRY}
+      - DEFAULT_STATE=${DEFAULT_STATE}
+      - DEFAULT_STATE_NAME=${DEFAULT_STATE_NAME}
+      - DEFAULT_CONTINENT=${DEFAULT_CONTINENT}

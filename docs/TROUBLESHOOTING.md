@@ -25,7 +25,7 @@
 
 ### Docker Issues
 - **Container won't start**: Check Docker logs with `docker-compose logs`
-- **Port conflicts**: Ensure ports 3000 and 5000 are available
+- **Port conflicts**: Ensure ports 3000 and 5100 are available
 - **Permission issues**: Check file permissions on the project directory
 - **Build failures**: Clear Docker cache with `docker system prune`
 
@@ -71,7 +71,6 @@
 ## Custom CSS Issues
 
 ### Styles Not Applying
-- Ensure CSS file path is correct
 - Check file permissions and mounting
 - Verify CSS syntax is valid
 - Check browser developer tools for errors

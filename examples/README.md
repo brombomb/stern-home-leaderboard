@@ -13,52 +13,47 @@ A comprehensive example of custom CSS overrides showing how to:
 - Create responsive designs
 - Use custom assets (images, fonts)
 
-### `docker-compose-with-custom-css.yml`
-An example Docker Compose configuration that demonstrates how to:
-- Enable custom CSS overrides with data volume
-- Mount your assets directory
-- Set the required environment variables
-
 ## Usage
 
 ### Using the Data Volume Approach (Recommended)
 
-1. **Create your data directory**:
+1. **Create your data directories**:
    ```bash
-   mkdir -p data/images data/fonts
+   mkdir -p frontend/public/app/data/images frontend/public/app/data/fonts
    ```
-
 2. **Copy the example CSS file**:
    ```bash
-   cp examples/custom-styles.css data/custom.css
+   cp examples/custom-styles.css frontend/public/app/data/custom.css
    ```
 
 3. **Add your assets**:
-   - Place images in `data/images/`
-   - Place fonts in `data/fonts/`
-   - Edit `data/custom.css` to reference your assets
+   - Place images in `frontend/public/app/data/images/`
+   - Place fonts in `frontend/public/app/data/fonts/`
+   - Edit `frontend/public/app/data/custom.css` to reference your assets
 
-4. **Use the example Docker Compose file**:
-   ```bash
-   # Copy the example
-   cp examples/docker-compose-with-custom-css.yml docker-compose.yml
-
-   # Or use it directly
-   docker-compose -f examples/docker-compose-with-custom-css.yml up
+4. **Uncomment the volume mount in the Docker Compose file**:
+   This mount is symlinked to the web server's root at container start.
+   ```
+      # Optional: Mount your custom assets into the /app/data directory.
+      # They will be linked to the web server static directory if present.
+      # `custom.css` specifically will be injected if present.
+      # Update the path on the left to your custom location
+      - ./frontend/public/app/data:/app/data:ro
    ```
 
-### Data Directory Structure
+### Web Root Data Directory Structure
 ```
-data/
-├── custom.css              # Main CSS file
-├── images/                 # Custom images
-│   ├── background.jpg      # Page background
-│   ├── logo.png           # Custom logo
-│   └── machines/          # Machine-specific images
-├── fonts/                 # Custom fonts
-│   ├── title-font.woff2   # Headers
-│   └── body-font.woff2    # Body text
-└── README.md              # Documentation
+app/
+└──data/
+   ├── custom.css      # Main CSS file
+   ├── images/                # Custom images
+   │   ├── background.jpg     # Page background
+   │   ├── logo.png           # Custom logo
+   │   └── machines/          # Machine-specific images
+   ├── fonts/                 # Custom fonts
+   │   ├── title-font.woff2   # Headers
+   │   └── body-font.woff2    # Body text
+   └── README.md              # Documentation
 ```
 
 ### Asset Usage in CSS
@@ -104,7 +99,12 @@ body {
 
 ## Troubleshooting
 
-- **File not found**: Check the volume mount path is correct
-- **Styles not applying**: Rebuild the container with `--build` flag
-- **Override not working**: Use more specific selectors or `!important`
-- **Container won't start**: Check the CSS file syntax for errors
+## Troubleshooting Custom CSS
+
+- **Styles not applying**: Ensure the `/app/data` file path is correctly mounted in the container and the file is named `custom.css`.
+- **File not found (404 in dev console)**: Check the volume mount path and verify the file exists on the host.
+- **Override not working**: Use more specific CSS selectors or `!important` declarations
+- **Changes not visible**: Rebuild the container with `docker-compose up --build`
+
+For development, you can test CSS changes by temporarily editing the styles directly in your browser's developer tools before creating your custom CSS file. You can also edit the file in place and reload since a symlink exists between the host file and the web 
+server `/app/data` directory.

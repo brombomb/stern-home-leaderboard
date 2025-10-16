@@ -41,6 +41,9 @@ function App() {
     };
   }, []);
 
+  // Debug: log main data props
+  // console.log({ machines, highScores, avatars, loading, error });
+
   // If we're in fullscreen mode and have a machine ID
   if (queryParams.fullscreen && queryParams.machineId) {
     if (loading) {

@@ -3,7 +3,7 @@
 ## Architecture
 
 ### Frontend (React)
-- **Modern React**: Built with React 18 and functional components
+- **Modern React**: Built with React 19 and functional components
 - **Modular Components**: Clean component architecture for maintainability
 - **Custom Hooks**: Centralized state management with custom hooks
 - **Service Layer**: Dedicated API service for all backend communication
@@ -16,6 +16,7 @@
 
 ### Infrastructure
 - **Docker Support**: Full containerization with Docker Compose
+- **Vite**: Modern React build tooling supporting latest versions of tools
 - **Development Mode**: Hot reload for both frontend and backend
 - **Offline Mode**: Mock data support for development without API access
 

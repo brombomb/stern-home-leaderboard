@@ -28,9 +28,6 @@
 
    # Optional: Frontend data refresh interval in minutes (default: 60)
    REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=60
-
-   # Optional: Custom CSS overrides file path (inside container)
-   CUSTOM_CSS_PATH=/app/custom-css/overrides.css
    ```
 
 3. **Start the application**
@@ -40,7 +37,7 @@
 
 4. **Access the application**
    - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
+   - Backend API: http://localhost:5100
    - Fullscreen mode: http://localhost:3000?machine=MACHINE_ID&fullscreen=true
 
 ## Environment Variables
@@ -84,9 +81,6 @@ DEFAULT_CONTINENT=NA
 
 # Optional: Frontend data refresh interval in minutes (default: 60)
 REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=60
-
-# Optional: Custom CSS overrides file path (inside container)
-CUSTOM_CSS_PATH=/app/custom-css/overrides.css
 ```
 
 ### Production Build
@@ -109,7 +103,7 @@ docker-compose down
 ```bash
 cd frontend
 npm install
-npm start
+npm run dev
 ```
 
 ### Backend
