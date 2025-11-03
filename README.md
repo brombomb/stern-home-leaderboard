@@ -67,6 +67,7 @@ docker-compose up --build
 
 # 4. Open in your browser
 open http://localhost:3000
+# (or your configured FRONTEND_PORT if changed)
 ```
 
 **That's it!** Your leaderboard is now running and displaying your machine high scores.

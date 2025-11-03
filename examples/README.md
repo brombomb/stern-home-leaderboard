@@ -4,6 +4,12 @@ This directory contains example files to help you get started with customizing y
 
 ## Files
 
+### `docker-compose-with-custom-css.yml`
+Example Docker Compose configuration that shows:
+- How to mount custom CSS and assets
+- Proper volume configuration for customization
+- Environment variable usage
+
 ### `custom-styles.css`
 A comprehensive example of custom CSS overrides showing how to:
 - Change colors and themes
@@ -12,6 +18,30 @@ A comprehensive example of custom CSS overrides showing how to:
 - Add animations and effects
 - Create responsive designs
 - Use custom assets (images, fonts)
+
+## Configuration Examples
+
+### Changing the Frontend Port
+
+If port 3000 conflicts with other services on your system (common with Unraid), set a custom port in your `.env` file:
+
+```bash
+# Example: Use port 8080 instead of 3000
+FRONTEND_PORT=8080
+
+# Other common alternatives:
+# FRONTEND_PORT=3001
+# FRONTEND_PORT=8000
+# FRONTEND_PORT=3333
+```
+
+After changing the port, restart your containers:
+```bash
+docker-compose down
+docker-compose up --build
+```
+
+Then access the application at: http://localhost:8080 (or your chosen port)
 
 ## Usage
 
@@ -106,5 +136,5 @@ body {
 - **Override not working**: Use more specific CSS selectors or `!important` declarations
 - **Changes not visible**: Rebuild the container with `docker-compose up --build`
 
-For development, you can test CSS changes by temporarily editing the styles directly in your browser's developer tools before creating your custom CSS file. You can also edit the file in place and reload since a symlink exists between the host file and the web 
+For development, you can test CSS changes by temporarily editing the styles directly in your browser's developer tools before creating your custom CSS file. You can also edit the file in place and reload since a symlink exists between the host file and the web
 server `/app/data` directory.
