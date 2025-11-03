@@ -1,15 +1,15 @@
 services:
   frontend:
     container_name: frontend
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        - VITE_DATA_REFRESH_INTERVAL_MINUTES=${VITE_DATA_REFRESH_INTERVAL_MINUTES:-60}
+        - VITE_GRID_COLUMNS=${VITE_GRID_COLUMNS:-1}
     ports:
       - "${FRONTEND_PORT:-3000}:80"
     environment:
-      - REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=${REACT_APP_DATA_REFRESH_INTERVAL_MINUTES:-60}
-      - REACT_APP_GRID_COLUMNS=${REACT_APP_GRID_COLUMNS:-1}
       - CUSTOM_CSS_PATH=${CUSTOM_CSS_PATH}
-      - DATA_REFRESH_INTERVAL_MINUTES=${DATA_REFRESH_INTERVAL_MINUTES:-60}
-      - GRID_COLUMNS=${GRID_COLUMNS:-1}
     volumes:
       # Optional: Mount your custom assets into the /app/data directory.
       # They will be linked to the web server static directory if present.

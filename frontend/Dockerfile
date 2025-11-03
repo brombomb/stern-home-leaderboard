@@ -4,6 +4,14 @@ COPY package.json .
 RUN npm install
 COPY . .
 
+# Accept build arguments and create .env file for Vite
+ARG VITE_DATA_REFRESH_INTERVAL_MINUTES=60
+ARG VITE_GRID_COLUMNS=1
+
+# Create .env file that Vite will read during build
+RUN echo "VITE_DATA_REFRESH_INTERVAL_MINUTES=${VITE_DATA_REFRESH_INTERVAL_MINUTES}" > .env && \
+    echo "VITE_GRID_COLUMNS=${VITE_GRID_COLUMNS}" >> .env
+
 # Set production environment and build
 ENV NODE_ENV=production
 RUN npm run build

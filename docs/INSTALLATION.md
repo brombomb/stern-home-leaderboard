@@ -32,7 +32,7 @@
    FRONTEND_PORT=3000
 
    # Optional: Frontend data refresh interval in minutes (default: 60)
-   REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=60
+   VITE_DATA_REFRESH_INTERVAL_MINUTES=60
    ```
 
 3. **Start the application**
@@ -61,12 +61,12 @@
 ### Frontend Configuration
 - `FRONTEND_PORT`: Port for the frontend web server (default: 3000)
   - Change this if port 3000 conflicts with other services
-- `REACT_APP_GRID_COLUMNS`: Number of columns for machine card layout (default: 1)
+- `VITE_GRID_COLUMNS`: Number of columns for machine card layout (default: 1)
   - `1`: Single column layout (default)
   - `2`: Two columns side by side
   - `3`: Three columns side by side
   - `4+`: Four or more columns (automatically reduced on smaller screens)
-- `REACT_APP_DATA_REFRESH_INTERVAL_MINUTES`: How often to automatically refresh machine data in minutes (default: 60)
+- `VITE_DATA_REFRESH_INTERVAL_MINUTES`: How often to automatically refresh machine data in minutes (default: 60)
 
 > **⚠️ Important**: Setting the refresh interval too low (less than 30 minutes) may result in account lockouts from Stern's API due to rate limiting. Use conservative refresh intervals to avoid service interruptions.
 
@@ -91,7 +91,7 @@ DEFAULT_CONTINENT=NA
 FRONTEND_PORT=3000
 
 # Optional: Frontend data refresh interval in minutes (default: 60)
-REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=60
+VITE_DATA_REFRESH_INTERVAL_MINUTES=60
 ```
 
 ### Production Build
