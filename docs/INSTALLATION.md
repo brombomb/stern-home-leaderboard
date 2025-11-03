@@ -17,10 +17,10 @@
    Create a `.env` file in the project root:
    ```env
    # Required: Stern Pinball credentials
-      STERN_USERNAME=your_stern_username
-      # IMPORTANT: If your password contains special characters (e.g. $, !, &), wrap it in double quotes
-      # Example: STERN_PASSWORD="pa$$word!with$special&chars"
-      STERN_PASSWORD="your_stern_password"
+   STERN_USERNAME=your_stern_username
+   # IMPORTANT: If your password contains special characters (e.g. $, !, &), wrap it in double quotes
+   # Example: STERN_PASSWORD="pa$$word!with$special&chars"
+   STERN_PASSWORD="your_stern_password"
 
    # Optional: Default location (defaults to Colorado, USA)
    DEFAULT_COUNTRY=US
