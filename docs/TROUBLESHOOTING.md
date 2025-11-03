@@ -25,7 +25,10 @@
 
 ### Docker Issues
 - **Container won't start**: Check Docker logs with `docker-compose logs`
-- **Port conflicts**: Ensure ports 3000 and 5100 are available
+- **Port conflicts**:
+  - Frontend port (default 3000): Set `FRONTEND_PORT` in `.env` to use a different port
+  - Backend port 5100: This is only exposed internally and shouldn't conflict
+  - Common alternative ports: 8080, 8000, 3001, 3333
 - **Permission issues**: Check file permissions on the project directory
 - **Build failures**: Clear Docker cache with `docker system prune`
 

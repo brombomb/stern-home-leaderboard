@@ -17,14 +17,19 @@
    Create a `.env` file in the project root:
    ```env
    # Required: Stern Pinball credentials
-   STERN_USERNAME=your_stern_username
-   STERN_PASSWORD=your_stern_password
+      STERN_USERNAME=your_stern_username
+      # IMPORTANT: If your password contains special characters (e.g. $, !, &), wrap it in double quotes
+      # Example: STERN_PASSWORD="pa$$word!with$special&chars"
+      STERN_PASSWORD="your_stern_password"
 
    # Optional: Default location (defaults to Colorado, USA)
    DEFAULT_COUNTRY=US
    DEFAULT_STATE=CO
    DEFAULT_STATE_NAME=Colorado
    DEFAULT_CONTINENT=NA
+
+   # Optional: Frontend port (default: 3000)
+   FRONTEND_PORT=3000
 
    # Optional: Frontend data refresh interval in minutes (default: 60)
    REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=60
@@ -36,15 +41,16 @@
    ```
 
 4. **Access the application**
-   - Frontend: http://localhost:3000
+   - Frontend: http://localhost:3000 (or your configured `FRONTEND_PORT`)
    - Backend API: http://localhost:5100
-   - Fullscreen mode: http://localhost:3000?machine=MACHINE_ID&fullscreen=true
+   - Fullscreen mode: http://localhost:3000?machine=MACHINE_ID&fullscreen=true (adjust port as needed)
 
 ## Environment Variables
 
 ### Required
 - `STERN_USERNAME`: Your Stern Pinball account username
 - `STERN_PASSWORD`: Your Stern Pinball account password
+   - If your password contains special characters (e.g. $, !, &), wrap it in double quotes: `STERN_PASSWORD="pa$$word!with$special&chars"`
 
 ### Optional
 - `DEFAULT_COUNTRY`: Default country code (default: "US")
@@ -53,6 +59,8 @@
 - `DEFAULT_CONTINENT`: Default continent code (default: "NA")
 
 ### Frontend Configuration
+- `FRONTEND_PORT`: Port for the frontend web server (default: 3000)
+  - Change this if port 3000 conflicts with other services
 - `REACT_APP_GRID_COLUMNS`: Number of columns for machine card layout (default: 1)
   - `1`: Single column layout (default)
   - `2`: Two columns side by side
@@ -78,6 +86,9 @@ DEFAULT_COUNTRY=US
 DEFAULT_STATE=CO
 DEFAULT_STATE_NAME=Colorado
 DEFAULT_CONTINENT=NA
+
+# Optional: Frontend port (default: 3000)
+FRONTEND_PORT=3000
 
 # Optional: Frontend data refresh interval in minutes (default: 60)
 REACT_APP_DATA_REFRESH_INTERVAL_MINUTES=60
