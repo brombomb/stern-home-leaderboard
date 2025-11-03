@@ -4,7 +4,7 @@ import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 import MachineCard from '../components/MachineCard';
 import Toast from '../components/Toast';
-import { GRID_COLUMNS } from '../config';
+import { getConfig } from '../config';
 import { triggerCelebration } from '../utils/confetti';
 import './MachinesPage.css';
 
@@ -200,7 +200,7 @@ function MachinesPage({
         <div
           className="machines-container"
           style={{
-            '--grid-columns': GRID_COLUMNS,
+            '--grid-columns': getConfig().GRID_COLUMNS,
           }}
         >
           {machines.map(machine => (

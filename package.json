@@ -5,14 +5,21 @@
   "scripts": {
     "lint": "npm run lint --prefix frontend && npm run lint --prefix backend",
     "lint:fix": "npm run lint:fix --prefix frontend && npm run lint:fix --prefix backend",
-    "start:frontend": "npm start --prefix frontend",
-    "start:backend": "npm start --prefix backend",
-    "dev:backend": "npm run dev --prefix backend",
-    "install:all": "npm install --prefix frontend && npm install --prefix backend"
+    "dev:frontend": "npm run dev --prefix frontend",
+    "build:frontend": "npm run build --prefix frontend",
+    "preview:frontend": "npm run preview --prefix frontend",
+    "start:backend": "dotenv -e .env -- npm start --prefix backend",
+    "dev:backend": "dotenv -e .env -- npm run dev --prefix backend",
+    "install:all": "npm install && npm install --prefix frontend && npm install --prefix backend"
   },
   "description": "Stern pinball leaderboard application",
   "workspaces": [
     "frontend",
     "backend"
-  ]
+  ],
+  "devDependencies": {
+    "eslint-plugin-react": "^7.37.5",
+    "react": "^19.2.0",
+    "dotenv-cli": "^8.0.0"
+  }
 }

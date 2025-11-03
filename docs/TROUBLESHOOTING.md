@@ -71,7 +71,6 @@
 ## Custom CSS Issues
 
 ### Styles Not Applying
-- Ensure CSS file path is correct
 - Check file permissions and mounting
 - Verify CSS syntax is valid
 - Check browser developer tools for errors

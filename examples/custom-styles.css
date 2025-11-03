@@ -5,9 +5,8 @@
  *
  * To use this file:
  * 1. Copy it to your desired location on the host machine
- * 2. Set CUSTOM_CSS_PATH environment variable
- * 3. Mount it as a volume in docker-compose.yml
- * 4. Restart the container
+ * 2. Mount the location as the volume /app/data in docker-compose.yml
+ * 3. Restart the container
  */
 
 /* ===== GLOBAL THEME CHANGES ===== */
