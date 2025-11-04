@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
-import { loadRuntimeConfig } from './config.js';
+// import { loadRuntimeConfig } from './config.js';
 
 // Dynamically inject custom CSS if present before rendering the app
 function injectCustomCss() {
@@ -19,10 +19,7 @@ function injectCustomCss() {
     .catch(() => {});
 }
 
-Promise.all([
-  loadRuntimeConfig(),
-  injectCustomCss()
-]).then(() => {
+injectCustomCss().then(() => {
   createRoot(document.getElementById('root')).render(
     <StrictMode>
       <App />
