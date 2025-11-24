@@ -7,10 +7,12 @@ COPY . .
 # Accept build arguments and create .env file for Vite
 ARG VITE_DATA_REFRESH_INTERVAL_MINUTES=60
 ARG VITE_GRID_COLUMNS=1
+ARG VITE_DISABLE_AUTOSCROLL=false
 
 # Create .env file that Vite will read during build
 RUN echo "VITE_DATA_REFRESH_INTERVAL_MINUTES=${VITE_DATA_REFRESH_INTERVAL_MINUTES}" > .env && \
-    echo "VITE_GRID_COLUMNS=${VITE_GRID_COLUMNS}" >> .env
+    echo "VITE_GRID_COLUMNS=${VITE_GRID_COLUMNS}" >> .env && \
+    echo "VITE_DISABLE_AUTOSCROLL=${VITE_DISABLE_AUTOSCROLL}" >> .env
 
 # Set production environment and build
 ENV NODE_ENV=production

@@ -43,6 +43,11 @@ function MachinesPage({
   };
 
   useEffect(() => {
+    // Don't start auto-scroll if disabled in config
+    if (getConfig().DISABLE_AUTOSCROLL) {
+      return;
+    }
+
     // Only start auto-scrolling if we have machines and the content is loaded
     if (!loading && !error && machines.length > 0) {
       const startAutoScroll = () => {
