@@ -8,6 +8,8 @@ import { getConfig } from '../config';
 import { triggerCelebration } from '../utils/confetti';
 import './MachinesPage.css';
 
+const config = getConfig();
+
 function MachinesPage({
   machines,
   highScores,
@@ -43,6 +45,11 @@ function MachinesPage({
   };
 
   useEffect(() => {
+    // Don't start auto-scroll if disabled in config
+    if (config.DISABLE_AUTOSCROLL) {
+      return;
+    }
+
     // Only start auto-scrolling if we have machines and the content is loaded
     if (!loading && !error && machines.length > 0) {
       const startAutoScroll = () => {
@@ -200,7 +207,7 @@ function MachinesPage({
         <div
           className="machines-container"
           style={{
-            '--grid-columns': getConfig().GRID_COLUMNS,
+            '--grid-columns': config.GRID_COLUMNS,
           }}
         >
           {machines.map(machine => (

@@ -6,6 +6,8 @@ services:
       args:
         - VITE_DATA_REFRESH_INTERVAL_MINUTES=${VITE_DATA_REFRESH_INTERVAL_MINUTES:-60}
         - VITE_GRID_COLUMNS=${VITE_GRID_COLUMNS:-1}
+        # Optional argument to disable auto-scroll
+        - VITE_DISABLE_AUTOSCROLL=${VITE_DISABLE_AUTOSCROLL:-false}
     ports:
       - "${FRONTEND_PORT:-3000}:80"
     environment:
