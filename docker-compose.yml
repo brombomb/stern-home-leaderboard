@@ -1,16 +1,13 @@
 services:
   frontend:
     container_name: frontend
-    build:
-      context: ./frontend
-      args:
-        - VITE_DATA_REFRESH_INTERVAL_MINUTES=${VITE_DATA_REFRESH_INTERVAL_MINUTES:-60}
-        - VITE_GRID_COLUMNS=${VITE_GRID_COLUMNS:-1}
-        # Optional argument to disable auto-scroll
-        - VITE_DISABLE_AUTOSCROLL=${VITE_DISABLE_AUTOSCROLL:-false}
+    image: ghcr.io/brombomb/stern-home-leaderboard-frontend:${FRONTEND_TAG:-latest}
     ports:
       - "${FRONTEND_PORT:-3000}:80"
     environment:
+      - DATA_REFRESH_INTERVAL_MINUTES=${DATA_REFRESH_INTERVAL_MINUTES:-60}
+      - GRID_COLUMNS=${GRID_COLUMNS:-1}
+      - DISABLE_AUTOSCROLL=${DISABLE_AUTOSCROLL:-false}
       - CUSTOM_CSS_PATH=${CUSTOM_CSS_PATH}
     volumes:
       # Optional: Mount your custom assets into the /app/data directory.
@@ -22,7 +19,7 @@ services:
       - backend
   backend:
     container_name: backend
-    build: ./backend
+    image: ghcr.io/brombomb/stern-home-leaderboard-backend:${BACKEND_TAG:-latest}
     expose:
       - "5100"
     environment:
