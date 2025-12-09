@@ -71,6 +71,8 @@ open http://localhost:3000
 # (or your configured FRONTEND_PORT if changed)
 ```
 
+Images are published for `linux/amd64` and `linux/arm64` (Raspberry Pi friendly).
+
 ## 🛠️ Quick Start for Development
 
 Iterate locally with live reload using the dev compose file:
