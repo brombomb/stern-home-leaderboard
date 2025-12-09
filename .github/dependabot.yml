@@ -8,12 +8,6 @@ updates:
     labels: ["dependencies", "actions"]
 
   - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    labels: ["dependencies", "npm"]
-
-  - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
       interval: "weekly"

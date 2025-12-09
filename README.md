@@ -111,7 +111,7 @@ If this helps showcase your pinball scores, consider supporting the development:
 
 - **🐛 Found a bug?** [Open an issue](https://github.com/brombomb/stern-home-leaderboard/issues)
 - **💡 Have an idea?** [Start a discussion](https://github.com/brombomb/stern-home-leaderboard/discussions)
-- **🛠️ Want to contribute?** See our [COONTRIBUTING Guide](docs/CONTRIBUTING.md)
+- **🛠️ Want to contribute?** See our [CONTRIBUTING Guide](docs/CONTRIBUTING.md)
 
 ## 📄 License
 
