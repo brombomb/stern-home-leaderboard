@@ -1,0 +1,40 @@
+services:
+  frontend:
+    container_name: frontend-dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "${FRONTEND_PORT:-3000}:5173"
+    environment:
+      - VITE_DATA_REFRESH_INTERVAL_MINUTES=${VITE_DATA_REFRESH_INTERVAL_MINUTES:-60}
+      - VITE_GRID_COLUMNS=${VITE_GRID_COLUMNS:-1}
+      - VITE_DISABLE_AUTOSCROLL=${VITE_DISABLE_AUTOSCROLL:-false}
+      - CUSTOM_CSS_PATH=${CUSTOM_CSS_PATH}
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    depends_on:
+      - backend
+
+  backend:
+    container_name: backend-dev
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "${BACKEND_PORT:-5100}:5100"
+    environment:
+      - STERN_USERNAME=${STERN_USERNAME}
+      - STERN_PASSWORD=${STERN_PASSWORD}
+      - DEFAULT_COUNTRY=${DEFAULT_COUNTRY}
+      - DEFAULT_STATE=${DEFAULT_STATE}
+      - DEFAULT_STATE_NAME=${DEFAULT_STATE_NAME}
+      - DEFAULT_CONTINENT=${DEFAULT_CONTINENT}
+    volumes:
+      - ./backend:/app
+      - backend_node_modules:/app/node_modules
+
+volumes:
+  frontend_node_modules:
+  backend_node_modules:

@@ -24,6 +24,7 @@ A beautiful web application for displaying pinball machine high scores from your
 **[👀 Try the Interactive Demo](https://brombomb.github.io/stern-home-leaderboard/)**
 
 Experience the leaderboard features with sample data including:
+
 - Game selection from Stern's catalog
 - Dynamic themes and styling
 - Toast notifications
@@ -49,9 +50,9 @@ Experience the leaderboard features with sample data including:
   </table>
 </div>
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Docker Compose)
 
-Get up and running in under 5 minutes:
+Use the published images (no build required):
 
 ```bash
 # 1. Clone the repository
@@ -62,33 +63,51 @@ cd stern-home-leaderboard
 cp .env.example .env
 # Edit .env with your Stern credentials
 
-# 3. Start the application
-docker-compose up --build
+# 4. Start the application
+docker compose up -d
 
-# 4. Open in your browser
+# 5. Open in your browser
 open http://localhost:3000
 # (or your configured FRONTEND_PORT if changed)
 ```
 
-**That's it!** Your leaderboard is now running and displaying your machine high scores.
+## 🛠️ Quick Start for Development
+
+Iterate locally with live reload using the dev compose file:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/brombomb/stern-home-leaderboard.git
+cd stern-home-leaderboard
+
+# 2. Create your environment file
+cp .env.example .env
+# Edit .env with your Stern credentials
+
+# 3. Start dev containers (builds from local source)
+docker compose -f docker-compose.dev.yml up --build
+
+# Frontend dev server: http://localhost:3000
+# Backend API:        http://localhost:5100
+```
+
+Hot reload is enabled via volume mounts; dependencies stay inside the container (`frontend_node_modules`, `backend_node_modules` named volumes).
 
 ## 📖 Documentation
 
-| Guide | Description |
-|-------|-------------|
-| **[📋 Installation](docs/INSTALLATION.md)** | Complete setup guide with all configuration options |
-| **[🎮 Features](docs/FEATURES.md)** | Fullscreen mode, kiosk setup, and advanced features |
-| **[🎨 Customization](docs/CUSTOMIZATION.md)** | Themes, custom CSS, fonts, and visual modifications |
-| **[🛠️ Development](docs/CONTRIBUTING.md)** | Local development, architecture, and contributing |
-| **[🚨 Troubleshooting](docs/TROUBLESHOOTING.md)** | Common issues and solutions |
-
+| Guide                                             | Description                                         |
+| ------------------------------------------------- | --------------------------------------------------- |
+| **[📋 Installation](docs/INSTALLATION.md)**       | Complete setup guide with all configuration options |
+| **[🎮 Features](docs/FEATURES.md)**               | Fullscreen mode, kiosk setup, and advanced features |
+| **[🎨 Customization](docs/CUSTOMIZATION.md)**     | Themes, custom CSS, fonts, and visual modifications |
+| **[🛠️ Development](docs/CONTRIBUTING.md)**        | Local development, architecture, and contributing   |
+| **[🚨 Troubleshooting](docs/TROUBLESHOOTING.md)** | Common issues and solutions                         |
 
 ## ☕ Support This Project
 
 If this helps showcase your pinball scores, consider supporting the development:
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y01L3NIG)
-
 
 - **🐛 Found a bug?** [Open an issue](https://github.com/brombomb/stern-home-leaderboard/issues)
 - **💡 Have an idea?** [Start a discussion](https://github.com/brombomb/stern-home-leaderboard/discussions)
