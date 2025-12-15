@@ -5,16 +5,16 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    labels: ["dependencies", "actions"]
+    labels: ["dependencies"]
 
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
       interval: "weekly"
-    labels: ["dependencies", "npm", "frontend"]
+    labels: ["dependencies"]
 
   - package-ecosystem: "npm"
     directory: "/backend"
     schedule:
       interval: "weekly"
-    labels: ["dependencies", "npm", "backend"]
+    labels: ["dependencies"]
