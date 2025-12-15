@@ -20,7 +20,7 @@
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
+    "@eslint/js": "^9.39.2",
     "eslint": "^9.39.1",
     "nodemon": "^3.1.11"
   }
