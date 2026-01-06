@@ -1,5 +1,5 @@
 const express = require('express');
-const fetch = require('node-fetch');
+
 const SternAuth = require('./auth');
 const router = express.Router();
 
@@ -32,21 +32,22 @@ class ApiError extends Error {
 class SternApiClient {
   constructor() {
     this.defaultHeaders = {
-      'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0',
-      'Accept': 'application/json, text/plain, */*',
+      'User-Agent':
+        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0',
+      Accept: 'application/json, text/plain, */*',
       'Accept-Language': 'en-US,en;q=0.5',
-      'Referer': 'https://insider.sternpinball.com/',
+      Referer: 'https://insider.sternpinball.com/',
       'Content-Type': 'application/json',
       'Cache-Control': 'max-age=604800, no-cache, no-store',
-      'Origin': 'https://insider.sternpinball.com',
-      'DNT': '1',
+      Origin: 'https://insider.sternpinball.com',
+      DNT: '1',
       'Sec-GPC': '1',
-      'Connection': 'keep-alive',
+      Connection: 'keep-alive',
       'Sec-Fetch-Dest': 'empty',
       'Sec-Fetch-Mode': 'cors',
       'Sec-Fetch-Site': 'cross-site',
-      'Pragma': 'no-cache',
-      'Location': DEFAULT_LOCATION,
+      Pragma: 'no-cache',
+      Location: DEFAULT_LOCATION,
     };
   }
 
@@ -91,8 +92,17 @@ class SternApiClient {
     const response = await fetch(url, { headers });
 
     // Handle authentication errors with retry
-    if ((response.status === 401 || response.status === 403) && retryCount < MAX_RETRIES) {
-      console.log(`Received ${response.status} error, attempting to refresh authentication (retry ${retryCount + 1}/${MAX_RETRIES})`);
+    if (
+      (response.status === 401 || response.status === 403) &&
+      retryCount < MAX_RETRIES
+    ) {
+      console.log(
+        `Received ${
+          response.status
+        } error, attempting to refresh authentication (retry ${
+          retryCount + 1
+        }/${MAX_RETRIES})`
+      );
 
       await this.logResponseError(response, 'Auth error');
 
@@ -130,7 +140,9 @@ class SternApiClient {
         return res.status(statusCode).json({
           error: errorMessage,
           details: error.message,
-          ...(error.status === 401 && { details: 'Please check your credentials' }),
+          ...(error.status === 401 && {
+            details: 'Please check your credentials',
+          }),
         });
       }
 
@@ -152,7 +164,9 @@ router.post('/reauth', async (req, res) => {
     if (refreshed) {
       res.json({ success: true, message: 'Re-authentication successful' });
     } else {
-      res.status(401).json({ success: false, error: 'Re-authentication failed' });
+      res
+        .status(401)
+        .json({ success: false, error: 'Re-authentication failed' });
     }
   } catch (err) {
     console.error('Re-authentication error:', err.message);
@@ -187,17 +201,20 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
             model: machine.model || detailsData.model,
           };
         } catch (err) {
-          console.error(`Failed to fetch details for machine ${machine.id}:`, err.message);
+          console.error(
+            `Failed to fetch details for machine ${machine.id}:`,
+            err.message
+          );
           // Return basic machine data if details fetch fails
           return machine;
         }
-      }),
+      })
     );
 
     // Extract successful results
     const successfulMachines = detailedMachines
-      .filter(result => result.status === 'fulfilled')
-      .map(result => result.value);
+      .filter((result) => result.status === 'fulfilled')
+      .map((result) => result.value);
 
     // Return the enhanced machines data in the same format as the original API
     res.json({
@@ -207,7 +224,6 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
         machines: successfulMachines,
       },
     });
-
   } catch (err) {
     console.error('Failed to fetch machines:', err.message);
 
@@ -226,21 +242,43 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
 });
 
 // High scores endpoint - protected by auth middleware
-router.get('/high-scores/:machineId', SternAuth.requireAuth, async (req, res) => {
-  const url = `${API_BASE_URL}/game_machine_high_scores/?machine_id=${req.params.machineId}`;
-  await apiClient.handleApiRoute(url, req, res, 'Failed to fetch high scores');
-});
+router.get(
+  '/high-scores/:machineId',
+  SternAuth.requireAuth,
+  async (req, res) => {
+    const url = `${API_BASE_URL}/game_machine_high_scores/?machine_id=${req.params.machineId}`;
+    await apiClient.handleApiRoute(
+      url,
+      req,
+      res,
+      'Failed to fetch high scores'
+    );
+  }
+);
 
 // Game teams endpoint to get avatars - protected by auth middleware
-router.get('/game-teams/:locationId', SternAuth.requireAuth, async (req, res) => {
-  const url = `${GAME_TEAMS_API_URL}/game_teams/?location_id=${req.params.locationId}`;
-  await apiClient.handleApiRoute(url, req, res, 'Failed to fetch game teams');
-});
+router.get(
+  '/game-teams/:locationId',
+  SternAuth.requireAuth,
+  async (req, res) => {
+    const url = `${GAME_TEAMS_API_URL}/game_teams/?location_id=${req.params.locationId}`;
+    await apiClient.handleApiRoute(url, req, res, 'Failed to fetch game teams');
+  }
+);
 
 // Machine details endpoint - protected by auth middleware
-router.get('/machine-details/:machineId', SternAuth.requireAuth, async (req, res) => {
-  const url = `${API_BASE_URL}/game_machines/${req.params.machineId}`;
-  await apiClient.handleApiRoute(url, req, res, 'Failed to fetch machine details');
-});
+router.get(
+  '/machine-details/:machineId',
+  SternAuth.requireAuth,
+  async (req, res) => {
+    const url = `${API_BASE_URL}/game_machines/${req.params.machineId}`;
+    await apiClient.handleApiRoute(
+      url,
+      req,
+      res,
+      'Failed to fetch machine details'
+    );
+  }
+);
 
 module.exports = router;
