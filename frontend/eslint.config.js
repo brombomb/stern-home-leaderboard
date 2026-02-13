@@ -3,13 +3,22 @@ import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactPlugin from 'eslint-plugin-react';
-import { defineConfig, globalIgnores } from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 
 const compat = new FlatCompat();
 
-
 export default defineConfig([
-  globalIgnores(['dist']),
+  {
+    ignores: [
+      'dist',
+      'dist/',
+      '**/dist',
+      '**/dist/**',
+      'build',
+      'build/',
+      '**/build/**',
+    ],
+  },
   ...compat.extends('plugin:react/recommended'),
   {
     files: ['**/*.{js,jsx}'],
@@ -29,9 +38,7 @@ export default defineConfig([
   },
   {
     files: ['**/*.{js,jsx}'],
-    extends: [
-      js.configs.recommended,
-    ],
+    extends: [js.configs.recommended],
     languageOptions: {
       ecmaVersion: 2022,
       globals: { ...globals.browser, ...globals.node, jest: true },

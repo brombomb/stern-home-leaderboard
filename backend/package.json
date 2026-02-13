@@ -8,8 +8,8 @@
     "dev": "nodemon index.js",
     "offline": "node offline-server.js",
     "dev-offline": "nodemon offline-server.js",
-    "lint": "eslint *.js",
-    "lint:fix": "eslint *.js --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "cheerio": "^1.2.0",
@@ -19,7 +19,7 @@
     "express-session": "^1.19.0"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9.0.0",
     "eslint": "^9.39.2",
     "nodemon": "^3.1.11"
   }

@@ -101,7 +101,7 @@ class SternApiClient {
           response.status
         } error, attempting to refresh authentication (retry ${
           retryCount + 1
-        }/${MAX_RETRIES})`
+        }/${MAX_RETRIES})`,
       );
 
       await this.logResponseError(response, 'Auth error');
@@ -203,12 +203,12 @@ router.get('/machines', SternAuth.requireAuth, async (req, res) => {
         } catch (err) {
           console.error(
             `Failed to fetch details for machine ${machine.id}:`,
-            err.message
+            err.message,
           );
           // Return basic machine data if details fetch fails
           return machine;
         }
-      })
+      }),
     );
 
     // Extract successful results
@@ -251,9 +251,9 @@ router.get(
       url,
       req,
       res,
-      'Failed to fetch high scores'
+      'Failed to fetch high scores',
     );
-  }
+  },
 );
 
 // Game teams endpoint to get avatars - protected by auth middleware
@@ -263,7 +263,7 @@ router.get(
   async (req, res) => {
     const url = `${GAME_TEAMS_API_URL}/game_teams/?location_id=${req.params.locationId}`;
     await apiClient.handleApiRoute(url, req, res, 'Failed to fetch game teams');
-  }
+  },
 );
 
 // Machine details endpoint - protected by auth middleware
@@ -276,9 +276,9 @@ router.get(
       url,
       req,
       res,
-      'Failed to fetch machine details'
+      'Failed to fetch machine details',
     );
-  }
+  },
 );
 
 module.exports = router;

@@ -37,7 +37,7 @@ class SternAuth {
           },
           body: JSON.stringify(loginData),
           redirect: 'manual',
-        }
+        },
       );
 
       // Extract cookies and check for JWT token
@@ -105,7 +105,7 @@ class SternAuth {
 
     if (!username || !password) {
       console.error(
-        'STERN_USERNAME and STERN_PASSWORD environment variables are required'
+        'STERN_USERNAME and STERN_PASSWORD environment variables are required',
       );
       // eslint-disable-next-line no-process-exit
       process.exit(1);
@@ -116,7 +116,7 @@ class SternAuth {
     if (!result.success) {
       console.warn('Failed to authenticate on startup:', result.error);
       console.warn(
-        'Server will continue but API calls may fail until authentication succeeds'
+        'Server will continue but API calls may fail until authentication succeeds',
       );
       // Don't exit, just continue - authentication will be retried on first API call
       return { success: false, error: result.error };
