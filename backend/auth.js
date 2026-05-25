@@ -21,7 +21,7 @@ class SternAuth {
             'Accept-Language': 'en-US,en;q=0.5',
             'Accept-Encoding': 'gzip, deflate, br, zstd',
             Referer: 'https://insider.sternpinball.com/login',
-            'Next-Action': '9d2cf818afff9e2c69368771b521d93585a10433',
+            'Next-Action': '60b6ea1369cef11053e1a0588dd3c2b64dfb5da389',
             'Next-Router-State-Tree':
               '%5B%22%22%2C%7B%22children%22%3A%5B%22login%22%2C%7B%22children%22%3A%5B%22__PAGE__%22%2C%7B%7D%2C%22%2Flogin%22%2C%22refresh%22%5D%7D%5D%7D%2Cnull%2Cnull%2Ctrue%5D',
             'Content-Type': 'text/plain;charset=UTF-8',
