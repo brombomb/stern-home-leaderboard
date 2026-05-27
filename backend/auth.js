@@ -4,8 +4,77 @@ class SternAuth {
   static lastAuthTime = null;
   static AUTH_EXPIRY_TIME = 30 * 60 * 1000; // 30 minutes
 
+  static async getNextActionHash() {
+    try {
+      const pageResponse = await fetch(
+        'https://insider.sternpinball.com/login',
+        {
+          headers: {
+            'User-Agent':
+              'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0',
+          },
+        },
+      );
+
+      const html = await pageResponse.text();
+
+      // Find all JS bundle URLs
+      const scriptMatches = [
+        ...html.matchAll(/src="([^"]+\.js[^"]*)"/g),
+      ];
+
+      const scriptUrls = scriptMatches.map((m) => {
+        const src = m[1];
+        return src.startsWith('http')
+          ? src
+          : `https://insider.sternpinball.com${src}`;
+      });
+
+      if (scriptUrls.length === 0) {
+        throw new Error('No script URLs found on the login page');
+      }
+
+      // Fetch all scripts in parallel and look for "performLogin"
+      const promises = scriptUrls.map(async (url) => {
+        try {
+          const jsResponse = await fetch(url);
+          const js = await jsResponse.text();
+
+          const target = '"performLogin"';
+          const perfLoginIdx = js.indexOf(target);
+          if (perfLoginIdx !== -1) {
+            const segment = js.substring(Math.max(0, perfLoginIdx - 150), perfLoginIdx);
+            const hashMatch = segment.match(/"([a-f0-9]{40,})"/);
+            if (hashMatch) {
+              return hashMatch[1];
+            }
+          }
+        } catch {
+          // Ignore individual script fetch failures
+        }
+        return null;
+      });
+
+      const results = await Promise.all(promises);
+      const hash = results.find((h) => h !== null);
+
+      if (hash) {
+        console.log('Found Next-Action hash:', hash);
+        return hash;
+      }
+
+      throw new Error('Could not determine Next-Action hash from JS bundles');
+    } catch (err) {
+      console.error('Hash discovery failed:', err);
+      throw err;
+    }
+  }
+
   static async login(username, password) {
     try {
+      // Dynamically fetch current Next-Action hash
+      const nextActionHash = await SternAuth.getNextActionHash();
+
       // Send login data as JSON array like the browser does
       const loginData = [username, password];
 
@@ -21,7 +90,7 @@ class SternAuth {
             'Accept-Language': 'en-US,en;q=0.5',
             'Accept-Encoding': 'gzip, deflate, br, zstd',
             Referer: 'https://insider.sternpinball.com/login',
-            'Next-Action': '60b6ea1369cef11053e1a0588dd3c2b64dfb5da389',
+            'Next-Action': nextActionHash,
             'Next-Router-State-Tree':
               '%5B%22%22%2C%7B%22children%22%3A%5B%22login%22%2C%7B%22children%22%3A%5B%22__PAGE__%22%2C%7B%7D%2C%22%2Flogin%22%2C%22refresh%22%5D%7D%5D%7D%2Cnull%2Cnull%2Ctrue%5D',
             'Content-Type': 'text/plain;charset=UTF-8',
