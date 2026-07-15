@@ -33,13 +33,13 @@ class SternAuth {
     return this.DEFAULT_HASH;
   }
 
-  static saveCachedHash(hash) {
+  static async saveCachedHash(hash) {
     if (!hash || !/^[a-f0-9]{40,}$/.test(hash)) {
       return;
     }
     this.cachedHash = hash;
     try {
-      fs.writeFileSync(this.HASH_CACHE_FILE, hash, 'utf8');
+      await fs.promises.writeFile(this.HASH_CACHE_FILE, hash, 'utf8');
       console.log('Saved Next-Action hash to persistent cache:', hash);
     } catch (err) {
       console.warn('Failed to write Next-Action hash cache file:', err.message);
