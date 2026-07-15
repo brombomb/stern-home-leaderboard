@@ -9,7 +9,6 @@ class SternAuth {
   static AUTH_EXPIRY_TIME = 30 * 60 * 1000; // 30 minutes
 
   static HASH_CACHE_FILE = path.join(__dirname, 'next_action_hash.txt');
-  static DEFAULT_HASH = '608b67b68d769e8f354b1e1998bdd4cc5108667025';
   static cachedHash = null;
 
   static async getCachedHash() {
@@ -17,18 +16,18 @@ class SternAuth {
       return this.cachedHash;
     }
     try {
-      const hash = (await fs.promises.readFile(this.HASH_CACHE_FILE, 'utf8')).trim();
-      if (hash && /^[a-f0-9]{40,}$/.test(hash)) {
-        this.cachedHash = hash;
-        console.log('Loaded Next-Action hash from persistent cache:', hash);
-        return hash;
+      const hash = await fs.promises.readFile(this.HASH_CACHE_FILE, 'utf8');
+      const trimmed = hash.trim();
+      if (trimmed && /^[a-f0-9]{40,}$/.test(trimmed)) {
+        this.cachedHash = trimmed;
+        console.log('Loaded Next-Action hash from persistent cache:', trimmed);
+        return trimmed;
       }
     } catch (err) {
       if (err.code !== 'ENOENT') {
         console.warn('Failed to read Next-Action hash cache file:', err.message);
       }
     }
-
     return null;
   }
 
@@ -51,6 +50,7 @@ class SternAuth {
       const pageResponse = await fetch(
         'https://insider.sternpinball.com/login',
         {
+          signal: globalThis.AbortSignal.timeout(15000),
           headers: {
             'User-Agent':
               'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0',
@@ -91,7 +91,9 @@ class SternAuth {
       const uniqueScriptUrls = [...new Set(scriptUrls)];
       const promises = uniqueScriptUrls.map(async (url) => {
         try {
-          const jsResponse = await fetch(url);
+          const jsResponse = await fetch(url, {
+            signal: globalThis.AbortSignal.timeout(15000),
+          });
           if (!jsResponse.ok) {
             return null;
           }
@@ -128,7 +130,7 @@ class SternAuth {
 
       if (hash) {
         console.log('Discovered Next-Action hash:', hash);
-        this.saveCachedHash(hash);
+        await this.saveCachedHash(hash);
         return hash;
       }
 
@@ -141,14 +143,16 @@ class SternAuth {
 
   static async login(username, password, forceRefreshHash = false) {
     try {
-      let nextActionHash;
+      let nextActionHash = null;
 
-      if (forceRefreshHash) {
-        // Force dynamic fetch
-        nextActionHash = await this.getNextActionHash();
-      } else {
+      if (!forceRefreshHash) {
         // Try getting cached hash first
         nextActionHash = await this.getCachedHash();
+      }
+
+      if (!nextActionHash) {
+        // Scrape the hash immediately on cache miss or forced refresh
+        nextActionHash = await this.getNextActionHash();
       }
 
       // Send login data as JSON array like the browser does
@@ -159,6 +163,7 @@ class SternAuth {
         'https://insider.sternpinball.com/login',
         {
           method: 'POST',
+          signal: globalThis.AbortSignal.timeout(15000),
           headers: {
             'User-Agent':
               'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0',
