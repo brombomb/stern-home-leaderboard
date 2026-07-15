@@ -29,8 +29,7 @@ class SternAuth {
       }
     }
 
-    console.log('Using default Next-Action hash:', this.DEFAULT_HASH);
-    return this.DEFAULT_HASH;
+    return null;
   }
 
   static async saveCachedHash(hash) {
