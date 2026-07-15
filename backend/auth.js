@@ -89,7 +89,8 @@ class SternAuth {
       }
 
       // Fetch scripts and search for performLogin
-      const promises = scriptUrls.map(async (url) => {
+      const uniqueScriptUrls = [...new Set(scriptUrls)];
+      const promises = uniqueScriptUrls.map(async (url) => {
         try {
           const jsResponse = await fetch(url);
           if (!jsResponse.ok) {
