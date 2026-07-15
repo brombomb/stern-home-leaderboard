@@ -12,21 +12,21 @@ class SternAuth {
   static DEFAULT_HASH = '608b67b68d769e8f354b1e1998bdd4cc5108667025';
   static cachedHash = null;
 
-  static getCachedHash() {
+  static async getCachedHash() {
     if (this.cachedHash) {
       return this.cachedHash;
     }
     try {
-      if (fs.existsSync(this.HASH_CACHE_FILE)) {
-        const hash = fs.readFileSync(this.HASH_CACHE_FILE, 'utf8').trim();
-        if (hash && /^[a-f0-9]{40,}$/.test(hash)) {
-          this.cachedHash = hash;
-          console.log('Loaded Next-Action hash from persistent cache:', hash);
-          return hash;
-        }
+      const hash = (await fs.promises.readFile(this.HASH_CACHE_FILE, 'utf8')).trim();
+      if (hash && /^[a-f0-9]{40,}$/.test(hash)) {
+        this.cachedHash = hash;
+        console.log('Loaded Next-Action hash from persistent cache:', hash);
+        return hash;
       }
     } catch (err) {
-      console.warn('Failed to read Next-Action hash cache file:', err.message);
+      if (err.code !== 'ENOENT') {
+        console.warn('Failed to read Next-Action hash cache file:', err.message);
+      }
     }
 
     console.log('Using default Next-Action hash:', this.DEFAULT_HASH);
