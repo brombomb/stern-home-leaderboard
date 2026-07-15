@@ -148,7 +148,7 @@ class SternAuth {
         nextActionHash = await this.getNextActionHash();
       } else {
         // Try getting cached hash first
-        nextActionHash = this.getCachedHash();
+        nextActionHash = await this.getCachedHash();
       }
 
       // Send login data as JSON array like the browser does
