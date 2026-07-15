@@ -232,7 +232,7 @@ class SternAuth {
         SternAuth.lastAuthTime = Date.now();
 
         // Save the successful hash to the persistent cache
-        this.saveCachedHash(nextActionHash);
+        await this.saveCachedHash(nextActionHash);
 
         return { success: true, authData, cookies };
       } else {
