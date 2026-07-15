@@ -19,8 +19,8 @@
     "express-session": "^1.19.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
-    "eslint": "^9.39.4",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.7.0",
     "nodemon": "^3.1.14"
   }
 }
