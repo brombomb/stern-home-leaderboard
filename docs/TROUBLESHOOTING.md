@@ -3,7 +3,8 @@
 ## Common Issues
 
 ### Authentication Failures
-- Verify STERN_USERNAME and STERN_PASSWORD are correct
+- Verify STERN_USERNAME is set to your Stern account email address (Stern Insider Connected authentication requires your email address, not your display handle/username)
+- Verify STERN_PASSWORD is correct (wrap in double quotes if it contains special characters)
 - Check that your Stern account has machine access
 - Ensure your Stern account is active and in good standing
 

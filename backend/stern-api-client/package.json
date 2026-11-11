@@ -1,0 +1,22 @@
+{
+  "name": "stern-api-client",
+  "version": "1.0.0",
+  "description": "Standardized client library & scraper for Stern Insider Connected API and Next.js authentication",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "keywords": [
+    "stern",
+    "pinball",
+    "insider-connected",
+    "api",
+    "next-action"
+  ],
+  "author": "brombomb",
+  "license": "MIT",
+  "dependencies": {},
+  "optionalDependencies": {
+    "playwright": "^1.40.0"
+  }
+}

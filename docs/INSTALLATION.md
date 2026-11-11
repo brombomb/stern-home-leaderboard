@@ -16,8 +16,8 @@
 
    Create a `.env` file in the project root:
    ```env
-   # Required: Stern Pinball credentials
-   STERN_USERNAME=your_stern_username
+   # Required: Stern Pinball credentials (use account email address)
+   STERN_USERNAME=your_stern_account_email@example.com
    # IMPORTANT: If your password contains special characters (e.g. $, !, &), wrap it in double quotes
    # Example: STERN_PASSWORD="pa$$word!with$special&chars"
    STERN_PASSWORD="your_stern_password"
@@ -48,7 +48,7 @@
 ## Environment Variables
 
 ### Required
-- `STERN_USERNAME`: Your Stern Pinball account username
+- `STERN_USERNAME`: Your Stern Pinball account email address (Stern Insider Connected requires your account email for login)
 - `STERN_PASSWORD`: Your Stern Pinball account password
    - If your password contains special characters (e.g. $, !, &), wrap it in double quotes: `STERN_PASSWORD="pa$$word!with$special&chars"`
 
@@ -77,8 +77,8 @@
 When using Docker Compose, you can configure all environment variables in your `.env` file, or use the [docker-compose.yaml](/docker-compose.yml) file:
 
 ```env
-# Required: Stern Pinball credentials
-STERN_USERNAME=your_stern_username
+# Required: Stern Pinball credentials (use account email address)
+STERN_USERNAME=your_stern_account_email@example.com
 STERN_PASSWORD=your_stern_password
 
 # Optional: Default location (defaults to Colorado, USA)
