@@ -21,6 +21,9 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "@eslint/js"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "nodemon"
+        # Hold nodemon on 3.1.11 until upstream updates minimatch past GHSA-g3hv-75wg-m249
+        update-types: ["version-update:semver-patch", "version-update:semver-minor", "version-update:semver-major"]
     groups:
       dependencies:
         patterns:
