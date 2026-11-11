@@ -6,15 +6,22 @@ updates:
     schedule:
       interval: "weekly"
     labels: ["dependencies"]
+    groups:
+      actions:
+        patterns:
+          - "*"
 
   - package-ecosystem: "npm"
-    directory: "/frontend"
+    directory: "/"
     schedule:
       interval: "weekly"
     labels: ["dependencies"]
-
-  - package-ecosystem: "npm"
-    directory: "/backend"
-    schedule:
-      interval: "weekly"
-    labels: ["dependencies"]
+    ignore:
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@eslint/js"
+        update-types: ["version-update:semver-major"]
+    groups:
+      dependencies:
+        patterns:
+          - "*"
