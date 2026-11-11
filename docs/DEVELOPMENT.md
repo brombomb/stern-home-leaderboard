@@ -45,9 +45,12 @@ This project uses ESLint to ensure consistent code quality and style across both
 - **Backend**: Uses ESLint 9 with Node.js-specific rules and flat config format
 - **Root**: Provides workspace-wide linting commands
 
-### Running ESLint
+### Running Tests & Linting
 
 ```bash
+# Run test suite (lint and build) across workspace
+npm test
+
 # Lint all projects from root
 npm run lint
 

@@ -10,8 +10,12 @@
 - **Local Dev:**
   - Frontend: `cd frontend && npm install && npm start`
   - Backend: `cd backend && npm install && npm run dev`
+  - Test all: `npm test` (runs lint and frontend build)
   - Lint all: `npm run lint` (from root)
   - Lint/fix: `npm run lint:fix` (from root)
+- **CI / Automation:**
+  - Pull request CI: `.github/workflows/ci.yml` validates lint and build across frontend and backend.
+  - Dependabot auto-merge: `.github/workflows/dependabot-auto-merge.yml` validates, approves, and automatically merges safe (non-major) dependency updates.
 - **Docker:**
   - Start all: `docker-compose up --build`
   - Custom CSS: Use `examples/docker-compose-with-custom-css.yml` and mount a `data/` volume for overrides.
@@ -36,7 +40,7 @@
 - **API Integration:** Never call Stern's API directly from the frontend; always use backend proxy.
 - **Error Handling:** Backend retries auth on 401/403, returns clear error JSON.
 - **Component Structure:** Prefer small, focused React components; use hooks for shared logic.
-- **Testing:** No formal test suite; manual testing via dev servers and Docker is standard.
+- **Testing:** Run `npm test` to validate ESLint and production frontend build; manual testing via dev servers and Docker for live runs.
 
 ## References
 - See `docs/DEVELOPMENT.md` for dev workflow, architecture, and project structure.
