@@ -4,9 +4,59 @@ const { URL, URLSearchParams } = require('url');
 const PROJECT_ID = 'P3HEU9eRz5zrjI8c28n88adIDzyI';
 const AUTH_HOST = 'https://auth.sternpinball.com';
 const REDIRECT_URI = 'https://insider.sternpinball.com/auth/callback';
+const FLOW_ID = 'prd-sign-in-or-up';
+const DEFAULT_FLOW_VERSION = 4;
+const DEFAULT_COMPONENTS_VERSION = '3.27.2';
+const DEFAULT_INTERACTION_ID = 'AMeyg_7npF';
 const DEFAULT_USER_AGENT =
   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
 const DEFAULT_AUTH_EXPIRY_MS = 30 * 60 * 1000; // 30 minutes
+
+async function getDescopeFlowConfig(flowId = FLOW_ID) {
+  let flowVersion = DEFAULT_FLOW_VERSION;
+  let componentsVersion = DEFAULT_COMPONENTS_VERSION;
+  try {
+    const cfgRes = await fetch(`${AUTH_HOST}/pages/${PROJECT_ID}/v2-beta/config.json`, {
+      headers: { 'User-Agent': DEFAULT_USER_AGENT },
+    });
+    if (cfgRes.ok) {
+      const cfg = await cfgRes.json();
+      if (cfg?.flows?.[flowId]?.version !== undefined && cfg?.flows?.[flowId]?.version !== null) {
+        flowVersion = cfg.flows[flowId].version;
+      }
+      if (cfg?.componentsVersion) {
+        componentsVersion = cfg.componentsVersion;
+      }
+    }
+  } catch {
+    // Fall back to default versions if config fetch fails
+  }
+  return { flowVersion, componentsVersion };
+}
+
+async function getLoginInteractionId(screenId) {
+  if (!screenId) {
+    return DEFAULT_INTERACTION_ID;
+  }
+  try {
+    const screenRes = await fetch(`${AUTH_HOST}/pages/${PROJECT_ID}/v2-beta/${screenId}.html`, {
+      headers: { 'User-Agent': DEFAULT_USER_AGENT },
+    });
+    if (screenRes.ok) {
+      const html = await screenRes.text();
+      const btnMatch = html.match(/<descope-button\b[^>]*\bauto-submit="true"[^>]*>/i);
+      if (btnMatch) {
+        const idMatch = btnMatch[0].match(/\bid="([^"]+)"/i);
+        if (idMatch?.[1]) {
+          return idMatch[1];
+        }
+      }
+    }
+  } catch {
+    // Fall back to default interactionId if screen fetch fails
+  }
+  return DEFAULT_INTERACTION_ID;
+}
 
 class SternAuthSession {
   /**
@@ -42,12 +92,13 @@ class SternAuthSession {
     this.password = password;
 
     try {
+      const { flowVersion, componentsVersion } = await getDescopeFlowConfig(FLOW_ID);
       const verifier = crypto.randomBytes(32).toString('base64url');
       const challenge = crypto.createHash('sha256').update(verifier).digest('base64url');
       const state = crypto.randomBytes(16).toString('hex');
 
       // 1. Authorize (PKCE S256)
-      const authUrl = `${AUTH_HOST}/oauth2/v1/${PROJECT_ID}/authorize?client_id=${PROJECT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=openid&state=${state}&code_challenge=${challenge}&code_challenge_method=S256&flow=prd-sign-in-or-up`;
+      const authUrl = `${AUTH_HOST}/oauth2/v1/${PROJECT_ID}/authorize?client_id=${PROJECT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=openid&state=${state}&code_challenge=${challenge}&code_challenge_method=S256&flow=${FLOW_ID}`;
       const resAuth = await fetch(authUrl, {
         headers: { 'User-Agent': DEFAULT_USER_AGENT },
         redirect: 'manual',
@@ -82,7 +133,7 @@ class SternAuthSession {
           ...(cookies ? { Cookie: cookies } : {}),
         },
         body: JSON.stringify({
-          flowId: 'prd-sign-in-or-up',
+          flowId: FLOW_ID,
           options: {
             baseUrl: AUTH_HOST,
             oidcIdpStateId: stateId,
@@ -90,9 +141,9 @@ class SternAuthSession {
             oidcErrorRedirectUri: REDIRECT_URI,
           },
           flowVersions: {
-            'prd-sign-in-or-up': 3,
+            [FLOW_ID]: flowVersion,
           },
-          componentsVersion: '3.27.2',
+          componentsVersion,
           input: { origin: AUTH_HOST },
         }),
       });
@@ -104,6 +155,8 @@ class SternAuthSession {
 
       const startData = await startRes.json();
       const executionId = startData.executionId;
+      const stepId = startData.stepId || '1';
+      const interactionId = await getLoginInteractionId(startData.screen?.id);
       const nonce = startRes.headers.get('x-descope-flow-nonce');
 
       if (typeof startRes.headers.getSetCookie === 'function' && startRes.headers.getSetCookie().length > 0) {
@@ -127,10 +180,10 @@ class SternAuthSession {
         },
         body: JSON.stringify({
           executionId,
-          stepId: '1',
-          interactionId: 'AMeyg_7npF',
-          version: 3,
-          componentsVersion: '3.27.2',
+          stepId,
+          interactionId,
+          version: flowVersion,
+          componentsVersion,
           input: {
             email: username,
             password,
